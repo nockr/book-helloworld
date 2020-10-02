@@ -1,0 +1,2792 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "openshift.io/deployment-config.latest-version": "1",
+                    "openshift.io/deployment-config.name": "mydb",
+                    "openshift.io/deployment.name": "mydb-1",
+                    "openshift.io/scc": "restricted"
+                },
+                "creationTimestamp": "2020-10-01T14:42:17Z",
+                "generateName": "mydb-1-",
+                "labels": {
+                    "deployment": "mydb-1",
+                    "deploymentconfig": "mydb",
+                    "name": "mydb"
+                },
+                "name": "mydb-1-nj6p2",
+                "namespace": "mynewapp",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "ReplicationController",
+                        "name": "mydb-1",
+                        "uid": "4975ad01-03f4-11eb-950d-080027237a3e"
+                    }
+                ],
+                "resourceVersion": "123560",
+                "selfLink": "/api/v1/namespaces/mynewapp/pods/mydb-1-nj6p2",
+                "uid": "4d8b43ed-03f4-11eb-950d-080027237a3e"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "env": [
+                            {
+                                "name": "POSTGRESQL_USER",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "key": "database-user",
+                                        "name": "mydb"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "POSTGRESQL_PASSWORD",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "key": "database-password",
+                                        "name": "mydb"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "POSTGRESQL_DATABASE",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "key": "database-name",
+                                        "name": "mydb"
+                                    }
+                                }
+                            }
+                        ],
+                        "image": "172.30.1.1:5000/openshift/postgresql@sha256:b681d78125361519180a6ac05242c296f8906c11eab7e207b5ca9a89b6344392",
+                        "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/usr/libexec/check-container",
+                                    "--live"
+                                ]
+                            },
+                            "failureThreshold": 3,
+                            "initialDelaySeconds": 120,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 10
+                        },
+                        "name": "postgresql",
+                        "ports": [
+                            {
+                                "containerPort": 5432,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/usr/libexec/check-container"
+                                ]
+                            },
+                            "failureThreshold": 3,
+                            "initialDelaySeconds": 5,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "resources": {
+                            "limits": {
+                                "memory": "512Mi"
+                            },
+                            "requests": {
+                                "memory": "512Mi"
+                            }
+                        },
+                        "securityContext": {
+                            "capabilities": {
+                                "drop": [
+                                    "KILL",
+                                    "MKNOD",
+                                    "SETGID",
+                                    "SETUID"
+                                ]
+                            },
+                            "privileged": false,
+                            "runAsUser": 1000160000
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/lib/pgsql/data",
+                                "name": "mydb-data"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-wtnjk",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "imagePullSecrets": [
+                    {
+                        "name": "default-dockercfg-4dz6d"
+                    }
+                ],
+                "nodeName": "localhost",
+                "priority": 0,
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {
+                    "fsGroup": 1000160000,
+                    "seLinuxOptions": {
+                        "level": "s0:c13,c2"
+                    }
+                },
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "node.kubernetes.io/memory-pressure",
+                        "operator": "Exists"
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "mydb-data",
+                        "persistentVolumeClaim": {
+                            "claimName": "mydb"
+                        }
+                    },
+                    {
+                        "name": "default-token-wtnjk",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "default-token-wtnjk"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2020-10-01T14:42:17Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2020-10-02T08:24:12Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": null,
+                        "status": "True",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2020-10-01T14:42:17Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://8f8ea38985beb27614f4f63a6c0e0d012610e604a788037b015dc1321538735e",
+                        "image": "sha256:ae7031b865b07787998ad86379a86fa8727ee333f22268b99aac04238b3ce41a",
+                        "imageID": "docker-pullable://172.30.1.1:5000/openshift/postgresql@sha256:b681d78125361519180a6ac05242c296f8906c11eab7e207b5ca9a89b6344392",
+                        "lastState": {
+                            "terminated": {
+                                "containerID": "docker://e256394e54e237387af3a128a8091a606a462894970021431da37c87afa27934",
+                                "exitCode": 0,
+                                "finishedAt": "2020-10-02T08:02:37Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-10-02T07:25:43Z"
+                            }
+                        },
+                        "name": "postgresql",
+                        "ready": true,
+                        "restartCount": 2,
+                        "state": {
+                            "running": {
+                                "startedAt": "2020-10-02T08:23:54Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.0.2.15",
+                "phase": "Running",
+                "podIP": "172.17.0.8",
+                "qosClass": "Burstable",
+                "startTime": "2020-10-01T14:42:17Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "openshift.io/build.name": "mynewapp-1",
+                    "openshift.io/scc": "privileged"
+                },
+                "creationTimestamp": "2020-10-01T12:28:15Z",
+                "labels": {
+                    "openshift.io/build.name": "mynewapp-1"
+                },
+                "name": "mynewapp-1-build",
+                "namespace": "mynewapp",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "build.openshift.io/v1",
+                        "controller": true,
+                        "kind": "Build",
+                        "name": "mynewapp-1",
+                        "uid": "93dfddf8-03e1-11eb-b143-080027237a3e"
+                    }
+                ],
+                "resourceVersion": "65692",
+                "selfLink": "/api/v1/namespaces/mynewapp/pods/mynewapp-1-build",
+                "uid": "9400eb6c-03e1-11eb-950d-080027237a3e"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "--loglevel=0"
+                        ],
+                        "command": [
+                            "openshift-sti-build"
+                        ],
+                        "env": [
+                            {
+                                "name": "BUILD",
+                                "value": "{\"kind\":\"Build\",\"apiVersion\":\"build.openshift.io/v1\",\"metadata\":{\"name\":\"mynewapp-1\",\"namespace\":\"mynewapp\",\"selfLink\":\"/apis/build.openshift.io/v1/namespaces/mynewapp/builds/mynewapp-1\",\"uid\":\"93dfddf8-03e1-11eb-b143-080027237a3e\",\"resourceVersion\":\"62005\",\"creationTimestamp\":\"2020-10-01T12:28:14Z\",\"labels\":{\"app\":\"mynewapp\",\"buildconfig\":\"mynewapp\",\"openshift.io/build-config.name\":\"mynewapp\",\"openshift.io/build.start-policy\":\"Serial\"},\"annotations\":{\"openshift.io/build-config.name\":\"mynewapp\",\"openshift.io/build.number\":\"1\"},\"ownerReferences\":[{\"apiVersion\":\"build.openshift.io/v1\",\"kind\":\"BuildConfig\",\"name\":\"mynewapp\",\"uid\":\"93a8c270-03e1-11eb-b143-080027237a3e\",\"controller\":true}]},\"spec\":{\"serviceAccount\":\"builder\",\"source\":{\"type\":\"Git\",\"git\":{\"uri\":\"https://github.com/nockr/book-helloworld.git\",\"ref\":\"master\"}},\"strategy\":{\"type\":\"Source\",\"sourceStrategy\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/openshift/wildfly@sha256:73b9d5578eac447606e708a635bc0661755866162673a4c6e6d1119248d3c2c8\"},\"pullSecret\":{\"name\":\"builder-dockercfg-bz2m2\"}}},\"output\":{\"to\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/mynewapp/mynewapp:latest\"},\"pushSecret\":{\"name\":\"builder-dockercfg-bz2m2\"}},\"resources\":{},\"postCommit\":{},\"nodeSelector\":null,\"triggeredBy\":[{\"message\":\"Build configuration change\"}]},\"status\":{\"phase\":\"New\",\"outputDockerImageReference\":\"172.30.1.1:5000/mynewapp/mynewapp:latest\",\"config\":{\"kind\":\"BuildConfig\",\"namespace\":\"mynewapp\",\"name\":\"mynewapp\"},\"output\":{}}}\n"
+                            },
+                            {
+                                "name": "SOURCE_REPOSITORY",
+                                "value": "https://github.com/nockr/book-helloworld.git"
+                            },
+                            {
+                                "name": "SOURCE_URI",
+                                "value": "https://github.com/nockr/book-helloworld.git"
+                            },
+                            {
+                                "name": "SOURCE_REF",
+                                "value": "master"
+                            },
+                            {
+                                "name": "ALLOWED_UIDS",
+                                "value": "1-"
+                            },
+                            {
+                                "name": "DROP_CAPS",
+                                "value": "KILL,MKNOD,SETGID,SETUID"
+                            },
+                            {
+                                "name": "PUSH_DOCKERCFG_PATH",
+                                "value": "/var/run/secrets/openshift.io/push"
+                            },
+                            {
+                                "name": "PULL_DOCKERCFG_PATH",
+                                "value": "/var/run/secrets/openshift.io/pull"
+                            }
+                        ],
+                        "image": "openshift/origin-docker-builder:v3.11.0",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "sti-build",
+                        "resources": {},
+                        "securityContext": {
+                            "privileged": true
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "FallbackToLogsOnError",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/tmp/build",
+                                "name": "buildworkdir"
+                            },
+                            {
+                                "mountPath": "/var/run/docker.sock",
+                                "name": "docker-socket"
+                            },
+                            {
+                                "mountPath": "/var/run/crio/crio.sock",
+                                "name": "crio-socket"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/openshift.io/push",
+                                "name": "builder-dockercfg-bz2m2-push",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/openshift.io/pull",
+                                "name": "builder-dockercfg-bz2m2-pull",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "builder-token-js29g",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "imagePullSecrets": [
+                    {
+                        "name": "builder-dockercfg-bz2m2"
+                    }
+                ],
+                "initContainers": [
+                    {
+                        "args": [
+                            "--loglevel=0"
+                        ],
+                        "command": [
+                            "openshift-git-clone"
+                        ],
+                        "env": [
+                            {
+                                "name": "BUILD",
+                                "value": "{\"kind\":\"Build\",\"apiVersion\":\"build.openshift.io/v1\",\"metadata\":{\"name\":\"mynewapp-1\",\"namespace\":\"mynewapp\",\"selfLink\":\"/apis/build.openshift.io/v1/namespaces/mynewapp/builds/mynewapp-1\",\"uid\":\"93dfddf8-03e1-11eb-b143-080027237a3e\",\"resourceVersion\":\"62005\",\"creationTimestamp\":\"2020-10-01T12:28:14Z\",\"labels\":{\"app\":\"mynewapp\",\"buildconfig\":\"mynewapp\",\"openshift.io/build-config.name\":\"mynewapp\",\"openshift.io/build.start-policy\":\"Serial\"},\"annotations\":{\"openshift.io/build-config.name\":\"mynewapp\",\"openshift.io/build.number\":\"1\"},\"ownerReferences\":[{\"apiVersion\":\"build.openshift.io/v1\",\"kind\":\"BuildConfig\",\"name\":\"mynewapp\",\"uid\":\"93a8c270-03e1-11eb-b143-080027237a3e\",\"controller\":true}]},\"spec\":{\"serviceAccount\":\"builder\",\"source\":{\"type\":\"Git\",\"git\":{\"uri\":\"https://github.com/nockr/book-helloworld.git\",\"ref\":\"master\"}},\"strategy\":{\"type\":\"Source\",\"sourceStrategy\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/openshift/wildfly@sha256:73b9d5578eac447606e708a635bc0661755866162673a4c6e6d1119248d3c2c8\"},\"pullSecret\":{\"name\":\"builder-dockercfg-bz2m2\"}}},\"output\":{\"to\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/mynewapp/mynewapp:latest\"},\"pushSecret\":{\"name\":\"builder-dockercfg-bz2m2\"}},\"resources\":{},\"postCommit\":{},\"nodeSelector\":null,\"triggeredBy\":[{\"message\":\"Build configuration change\"}]},\"status\":{\"phase\":\"New\",\"outputDockerImageReference\":\"172.30.1.1:5000/mynewapp/mynewapp:latest\",\"config\":{\"kind\":\"BuildConfig\",\"namespace\":\"mynewapp\",\"name\":\"mynewapp\"},\"output\":{}}}\n"
+                            },
+                            {
+                                "name": "SOURCE_REPOSITORY",
+                                "value": "https://github.com/nockr/book-helloworld.git"
+                            },
+                            {
+                                "name": "SOURCE_URI",
+                                "value": "https://github.com/nockr/book-helloworld.git"
+                            },
+                            {
+                                "name": "SOURCE_REF",
+                                "value": "master"
+                            },
+                            {
+                                "name": "ALLOWED_UIDS",
+                                "value": "1-"
+                            },
+                            {
+                                "name": "DROP_CAPS",
+                                "value": "KILL,MKNOD,SETGID,SETUID"
+                            }
+                        ],
+                        "image": "openshift/origin-docker-builder:v3.11.0",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "git-clone",
+                        "resources": {},
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "FallbackToLogsOnError",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/tmp/build",
+                                "name": "buildworkdir"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "builder-token-js29g",
+                                "readOnly": true
+                            }
+                        ]
+                    },
+                    {
+                        "args": [
+                            "--loglevel=0"
+                        ],
+                        "command": [
+                            "openshift-manage-dockerfile"
+                        ],
+                        "env": [
+                            {
+                                "name": "BUILD",
+                                "value": "{\"kind\":\"Build\",\"apiVersion\":\"build.openshift.io/v1\",\"metadata\":{\"name\":\"mynewapp-1\",\"namespace\":\"mynewapp\",\"selfLink\":\"/apis/build.openshift.io/v1/namespaces/mynewapp/builds/mynewapp-1\",\"uid\":\"93dfddf8-03e1-11eb-b143-080027237a3e\",\"resourceVersion\":\"62005\",\"creationTimestamp\":\"2020-10-01T12:28:14Z\",\"labels\":{\"app\":\"mynewapp\",\"buildconfig\":\"mynewapp\",\"openshift.io/build-config.name\":\"mynewapp\",\"openshift.io/build.start-policy\":\"Serial\"},\"annotations\":{\"openshift.io/build-config.name\":\"mynewapp\",\"openshift.io/build.number\":\"1\"},\"ownerReferences\":[{\"apiVersion\":\"build.openshift.io/v1\",\"kind\":\"BuildConfig\",\"name\":\"mynewapp\",\"uid\":\"93a8c270-03e1-11eb-b143-080027237a3e\",\"controller\":true}]},\"spec\":{\"serviceAccount\":\"builder\",\"source\":{\"type\":\"Git\",\"git\":{\"uri\":\"https://github.com/nockr/book-helloworld.git\",\"ref\":\"master\"}},\"strategy\":{\"type\":\"Source\",\"sourceStrategy\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/openshift/wildfly@sha256:73b9d5578eac447606e708a635bc0661755866162673a4c6e6d1119248d3c2c8\"},\"pullSecret\":{\"name\":\"builder-dockercfg-bz2m2\"}}},\"output\":{\"to\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/mynewapp/mynewapp:latest\"},\"pushSecret\":{\"name\":\"builder-dockercfg-bz2m2\"}},\"resources\":{},\"postCommit\":{},\"nodeSelector\":null,\"triggeredBy\":[{\"message\":\"Build configuration change\"}]},\"status\":{\"phase\":\"New\",\"outputDockerImageReference\":\"172.30.1.1:5000/mynewapp/mynewapp:latest\",\"config\":{\"kind\":\"BuildConfig\",\"namespace\":\"mynewapp\",\"name\":\"mynewapp\"},\"output\":{}}}\n"
+                            },
+                            {
+                                "name": "SOURCE_REPOSITORY",
+                                "value": "https://github.com/nockr/book-helloworld.git"
+                            },
+                            {
+                                "name": "SOURCE_URI",
+                                "value": "https://github.com/nockr/book-helloworld.git"
+                            },
+                            {
+                                "name": "SOURCE_REF",
+                                "value": "master"
+                            },
+                            {
+                                "name": "ALLOWED_UIDS",
+                                "value": "1-"
+                            },
+                            {
+                                "name": "DROP_CAPS",
+                                "value": "KILL,MKNOD,SETGID,SETUID"
+                            }
+                        ],
+                        "image": "openshift/origin-docker-builder:v3.11.0",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "manage-dockerfile",
+                        "resources": {},
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "FallbackToLogsOnError",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/tmp/build",
+                                "name": "buildworkdir"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "builder-token-js29g",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "nodeName": "localhost",
+                "priority": 0,
+                "restartPolicy": "Never",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "builder",
+                "serviceAccountName": "builder",
+                "terminationGracePeriodSeconds": 30,
+                "volumes": [
+                    {
+                        "emptyDir": {},
+                        "name": "buildworkdir"
+                    },
+                    {
+                        "hostPath": {
+                            "path": "/var/run/docker.sock",
+                            "type": ""
+                        },
+                        "name": "docker-socket"
+                    },
+                    {
+                        "hostPath": {
+                            "path": "/var/run/crio/crio.sock",
+                            "type": ""
+                        },
+                        "name": "crio-socket"
+                    },
+                    {
+                        "name": "builder-dockercfg-bz2m2-push",
+                        "secret": {
+                            "defaultMode": 384,
+                            "secretName": "builder-dockercfg-bz2m2"
+                        }
+                    },
+                    {
+                        "name": "builder-dockercfg-bz2m2-pull",
+                        "secret": {
+                            "defaultMode": 384,
+                            "secretName": "builder-dockercfg-bz2m2"
+                        }
+                    },
+                    {
+                        "name": "builder-token-js29g",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "builder-token-js29g"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2020-10-01T12:28:22Z",
+                        "reason": "PodCompleted",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2020-10-01T12:43:21Z",
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": null,
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2020-10-01T12:28:15Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://1eb65b777dd0620910261eaa8a5d9957ccf9053f6061e41d0f760be8834ce137",
+                        "image": "docker.io/openshift/origin-docker-builder:v3.11.0",
+                        "imageID": "docker-pullable://docker.io/openshift/origin-docker-builder@sha256:4a68b5abdc75132e98a13e569633cb22445ebd083b30c03b121418a7e1b310e6",
+                        "lastState": {},
+                        "name": "sti-build",
+                        "ready": false,
+                        "restartCount": 0,
+                        "state": {
+                            "terminated": {
+                                "containerID": "docker://1eb65b777dd0620910261eaa8a5d9957ccf9053f6061e41d0f760be8834ce137",
+                                "exitCode": 0,
+                                "finishedAt": "2020-10-01T12:43:20Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-10-01T12:28:23Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.0.2.15",
+                "initContainerStatuses": [
+                    {
+                        "containerID": "docker://434a4281ce68c53e8f947edd3496135a5a750ec76d1fff7454bd43c5fd6c8164",
+                        "image": "docker.io/openshift/origin-docker-builder:v3.11.0",
+                        "imageID": "docker-pullable://docker.io/openshift/origin-docker-builder@sha256:4a68b5abdc75132e98a13e569633cb22445ebd083b30c03b121418a7e1b310e6",
+                        "lastState": {},
+                        "name": "git-clone",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "terminated": {
+                                "containerID": "docker://434a4281ce68c53e8f947edd3496135a5a750ec76d1fff7454bd43c5fd6c8164",
+                                "exitCode": 0,
+                                "finishedAt": "2020-10-01T12:28:21Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-10-01T12:28:18Z"
+                            }
+                        }
+                    },
+                    {
+                        "containerID": "docker://d69cf8978e44c7205db97cb100a36c553405a2ed10931d0d7cf5661329ad8719",
+                        "image": "docker.io/openshift/origin-docker-builder:v3.11.0",
+                        "imageID": "docker-pullable://docker.io/openshift/origin-docker-builder@sha256:4a68b5abdc75132e98a13e569633cb22445ebd083b30c03b121418a7e1b310e6",
+                        "lastState": {},
+                        "name": "manage-dockerfile",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "terminated": {
+                                "containerID": "docker://d69cf8978e44c7205db97cb100a36c553405a2ed10931d0d7cf5661329ad8719",
+                                "exitCode": 0,
+                                "finishedAt": "2020-10-01T12:28:22Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-10-01T12:28:21Z"
+                            }
+                        }
+                    }
+                ],
+                "phase": "Succeeded",
+                "podIP": "172.17.0.8",
+                "qosClass": "BestEffort",
+                "startTime": "2020-10-01T12:28:15Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "openshift.io/build.name": "mynewapp-2",
+                    "openshift.io/scc": "privileged"
+                },
+                "creationTimestamp": "2020-10-01T13:01:43Z",
+                "labels": {
+                    "openshift.io/build.name": "mynewapp-2"
+                },
+                "name": "mynewapp-2-build",
+                "namespace": "mynewapp",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "build.openshift.io/v1",
+                        "controller": true,
+                        "kind": "Build",
+                        "name": "mynewapp-2",
+                        "uid": "4132af50-03e6-11eb-b143-080027237a3e"
+                    }
+                ],
+                "resourceVersion": "70324",
+                "selfLink": "/api/v1/namespaces/mynewapp/pods/mynewapp-2-build",
+                "uid": "413d63b0-03e6-11eb-950d-080027237a3e"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "--loglevel=0"
+                        ],
+                        "command": [
+                            "openshift-sti-build"
+                        ],
+                        "env": [
+                            {
+                                "name": "BUILD",
+                                "value": "{\"kind\":\"Build\",\"apiVersion\":\"build.openshift.io/v1\",\"metadata\":{\"name\":\"mynewapp-2\",\"namespace\":\"mynewapp\",\"selfLink\":\"/apis/build.openshift.io/v1/namespaces/mynewapp/builds/mynewapp-2\",\"uid\":\"4132af50-03e6-11eb-b143-080027237a3e\",\"resourceVersion\":\"70167\",\"creationTimestamp\":\"2020-10-01T13:01:43Z\",\"labels\":{\"app\":\"mynewapp\",\"buildconfig\":\"mynewapp\",\"openshift.io/build-config.name\":\"mynewapp\",\"openshift.io/build.start-policy\":\"Serial\"},\"annotations\":{\"openshift.io/build-config.name\":\"mynewapp\",\"openshift.io/build.number\":\"2\"},\"ownerReferences\":[{\"apiVersion\":\"build.openshift.io/v1\",\"kind\":\"BuildConfig\",\"name\":\"mynewapp\",\"uid\":\"93a8c270-03e1-11eb-b143-080027237a3e\",\"controller\":true}]},\"spec\":{\"serviceAccount\":\"builder\",\"source\":{\"type\":\"Git\",\"git\":{\"uri\":\"https://github.com/nockr/book-helloworld.git\",\"ref\":\"master\"}},\"strategy\":{\"type\":\"Source\",\"sourceStrategy\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/openshift/wildfly@sha256:73b9d5578eac447606e708a635bc0661755866162673a4c6e6d1119248d3c2c8\"},\"pullSecret\":{\"name\":\"builder-dockercfg-bz2m2\"}}},\"output\":{\"to\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/mynewapp/mynewapp:latest\"},\"pushSecret\":{\"name\":\"builder-dockercfg-bz2m2\"}},\"resources\":{},\"postCommit\":{},\"nodeSelector\":null,\"triggeredBy\":[{\"message\":\"Manually triggered\"}]},\"status\":{\"phase\":\"New\",\"outputDockerImageReference\":\"172.30.1.1:5000/mynewapp/mynewapp:latest\",\"config\":{\"kind\":\"BuildConfig\",\"namespace\":\"mynewapp\",\"name\":\"mynewapp\"},\"output\":{}}}\n"
+                            },
+                            {
+                                "name": "SOURCE_REPOSITORY",
+                                "value": "https://github.com/nockr/book-helloworld.git"
+                            },
+                            {
+                                "name": "SOURCE_URI",
+                                "value": "https://github.com/nockr/book-helloworld.git"
+                            },
+                            {
+                                "name": "SOURCE_REF",
+                                "value": "master"
+                            },
+                            {
+                                "name": "ALLOWED_UIDS",
+                                "value": "1-"
+                            },
+                            {
+                                "name": "DROP_CAPS",
+                                "value": "KILL,MKNOD,SETGID,SETUID"
+                            },
+                            {
+                                "name": "PUSH_DOCKERCFG_PATH",
+                                "value": "/var/run/secrets/openshift.io/push"
+                            },
+                            {
+                                "name": "PULL_DOCKERCFG_PATH",
+                                "value": "/var/run/secrets/openshift.io/pull"
+                            }
+                        ],
+                        "image": "openshift/origin-docker-builder:v3.11.0",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "sti-build",
+                        "resources": {},
+                        "securityContext": {
+                            "privileged": true
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "FallbackToLogsOnError",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/tmp/build",
+                                "name": "buildworkdir"
+                            },
+                            {
+                                "mountPath": "/var/run/docker.sock",
+                                "name": "docker-socket"
+                            },
+                            {
+                                "mountPath": "/var/run/crio/crio.sock",
+                                "name": "crio-socket"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/openshift.io/push",
+                                "name": "builder-dockercfg-bz2m2-push",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/openshift.io/pull",
+                                "name": "builder-dockercfg-bz2m2-pull",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "builder-token-js29g",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "imagePullSecrets": [
+                    {
+                        "name": "builder-dockercfg-bz2m2"
+                    }
+                ],
+                "initContainers": [
+                    {
+                        "args": [
+                            "--loglevel=0"
+                        ],
+                        "command": [
+                            "openshift-git-clone"
+                        ],
+                        "env": [
+                            {
+                                "name": "BUILD",
+                                "value": "{\"kind\":\"Build\",\"apiVersion\":\"build.openshift.io/v1\",\"metadata\":{\"name\":\"mynewapp-2\",\"namespace\":\"mynewapp\",\"selfLink\":\"/apis/build.openshift.io/v1/namespaces/mynewapp/builds/mynewapp-2\",\"uid\":\"4132af50-03e6-11eb-b143-080027237a3e\",\"resourceVersion\":\"70167\",\"creationTimestamp\":\"2020-10-01T13:01:43Z\",\"labels\":{\"app\":\"mynewapp\",\"buildconfig\":\"mynewapp\",\"openshift.io/build-config.name\":\"mynewapp\",\"openshift.io/build.start-policy\":\"Serial\"},\"annotations\":{\"openshift.io/build-config.name\":\"mynewapp\",\"openshift.io/build.number\":\"2\"},\"ownerReferences\":[{\"apiVersion\":\"build.openshift.io/v1\",\"kind\":\"BuildConfig\",\"name\":\"mynewapp\",\"uid\":\"93a8c270-03e1-11eb-b143-080027237a3e\",\"controller\":true}]},\"spec\":{\"serviceAccount\":\"builder\",\"source\":{\"type\":\"Git\",\"git\":{\"uri\":\"https://github.com/nockr/book-helloworld.git\",\"ref\":\"master\"}},\"strategy\":{\"type\":\"Source\",\"sourceStrategy\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/openshift/wildfly@sha256:73b9d5578eac447606e708a635bc0661755866162673a4c6e6d1119248d3c2c8\"},\"pullSecret\":{\"name\":\"builder-dockercfg-bz2m2\"}}},\"output\":{\"to\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/mynewapp/mynewapp:latest\"},\"pushSecret\":{\"name\":\"builder-dockercfg-bz2m2\"}},\"resources\":{},\"postCommit\":{},\"nodeSelector\":null,\"triggeredBy\":[{\"message\":\"Manually triggered\"}]},\"status\":{\"phase\":\"New\",\"outputDockerImageReference\":\"172.30.1.1:5000/mynewapp/mynewapp:latest\",\"config\":{\"kind\":\"BuildConfig\",\"namespace\":\"mynewapp\",\"name\":\"mynewapp\"},\"output\":{}}}\n"
+                            },
+                            {
+                                "name": "SOURCE_REPOSITORY",
+                                "value": "https://github.com/nockr/book-helloworld.git"
+                            },
+                            {
+                                "name": "SOURCE_URI",
+                                "value": "https://github.com/nockr/book-helloworld.git"
+                            },
+                            {
+                                "name": "SOURCE_REF",
+                                "value": "master"
+                            },
+                            {
+                                "name": "ALLOWED_UIDS",
+                                "value": "1-"
+                            },
+                            {
+                                "name": "DROP_CAPS",
+                                "value": "KILL,MKNOD,SETGID,SETUID"
+                            }
+                        ],
+                        "image": "openshift/origin-docker-builder:v3.11.0",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "git-clone",
+                        "resources": {},
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "FallbackToLogsOnError",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/tmp/build",
+                                "name": "buildworkdir"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "builder-token-js29g",
+                                "readOnly": true
+                            }
+                        ]
+                    },
+                    {
+                        "args": [
+                            "--loglevel=0"
+                        ],
+                        "command": [
+                            "openshift-manage-dockerfile"
+                        ],
+                        "env": [
+                            {
+                                "name": "BUILD",
+                                "value": "{\"kind\":\"Build\",\"apiVersion\":\"build.openshift.io/v1\",\"metadata\":{\"name\":\"mynewapp-2\",\"namespace\":\"mynewapp\",\"selfLink\":\"/apis/build.openshift.io/v1/namespaces/mynewapp/builds/mynewapp-2\",\"uid\":\"4132af50-03e6-11eb-b143-080027237a3e\",\"resourceVersion\":\"70167\",\"creationTimestamp\":\"2020-10-01T13:01:43Z\",\"labels\":{\"app\":\"mynewapp\",\"buildconfig\":\"mynewapp\",\"openshift.io/build-config.name\":\"mynewapp\",\"openshift.io/build.start-policy\":\"Serial\"},\"annotations\":{\"openshift.io/build-config.name\":\"mynewapp\",\"openshift.io/build.number\":\"2\"},\"ownerReferences\":[{\"apiVersion\":\"build.openshift.io/v1\",\"kind\":\"BuildConfig\",\"name\":\"mynewapp\",\"uid\":\"93a8c270-03e1-11eb-b143-080027237a3e\",\"controller\":true}]},\"spec\":{\"serviceAccount\":\"builder\",\"source\":{\"type\":\"Git\",\"git\":{\"uri\":\"https://github.com/nockr/book-helloworld.git\",\"ref\":\"master\"}},\"strategy\":{\"type\":\"Source\",\"sourceStrategy\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/openshift/wildfly@sha256:73b9d5578eac447606e708a635bc0661755866162673a4c6e6d1119248d3c2c8\"},\"pullSecret\":{\"name\":\"builder-dockercfg-bz2m2\"}}},\"output\":{\"to\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/mynewapp/mynewapp:latest\"},\"pushSecret\":{\"name\":\"builder-dockercfg-bz2m2\"}},\"resources\":{},\"postCommit\":{},\"nodeSelector\":null,\"triggeredBy\":[{\"message\":\"Manually triggered\"}]},\"status\":{\"phase\":\"New\",\"outputDockerImageReference\":\"172.30.1.1:5000/mynewapp/mynewapp:latest\",\"config\":{\"kind\":\"BuildConfig\",\"namespace\":\"mynewapp\",\"name\":\"mynewapp\"},\"output\":{}}}\n"
+                            },
+                            {
+                                "name": "SOURCE_REPOSITORY",
+                                "value": "https://github.com/nockr/book-helloworld.git"
+                            },
+                            {
+                                "name": "SOURCE_URI",
+                                "value": "https://github.com/nockr/book-helloworld.git"
+                            },
+                            {
+                                "name": "SOURCE_REF",
+                                "value": "master"
+                            },
+                            {
+                                "name": "ALLOWED_UIDS",
+                                "value": "1-"
+                            },
+                            {
+                                "name": "DROP_CAPS",
+                                "value": "KILL,MKNOD,SETGID,SETUID"
+                            }
+                        ],
+                        "image": "openshift/origin-docker-builder:v3.11.0",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "manage-dockerfile",
+                        "resources": {},
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "FallbackToLogsOnError",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/tmp/build",
+                                "name": "buildworkdir"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "builder-token-js29g",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "nodeName": "localhost",
+                "priority": 0,
+                "restartPolicy": "Never",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "builder",
+                "serviceAccountName": "builder",
+                "terminationGracePeriodSeconds": 30,
+                "volumes": [
+                    {
+                        "emptyDir": {},
+                        "name": "buildworkdir"
+                    },
+                    {
+                        "hostPath": {
+                            "path": "/var/run/docker.sock",
+                            "type": ""
+                        },
+                        "name": "docker-socket"
+                    },
+                    {
+                        "hostPath": {
+                            "path": "/var/run/crio/crio.sock",
+                            "type": ""
+                        },
+                        "name": "crio-socket"
+                    },
+                    {
+                        "name": "builder-dockercfg-bz2m2-push",
+                        "secret": {
+                            "defaultMode": 384,
+                            "secretName": "builder-dockercfg-bz2m2"
+                        }
+                    },
+                    {
+                        "name": "builder-dockercfg-bz2m2-pull",
+                        "secret": {
+                            "defaultMode": 384,
+                            "secretName": "builder-dockercfg-bz2m2"
+                        }
+                    },
+                    {
+                        "name": "builder-token-js29g",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "builder-token-js29g"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2020-10-01T13:01:49Z",
+                        "reason": "PodCompleted",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2020-10-01T13:02:13Z",
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": null,
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2020-10-01T13:01:43Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://8ce5cca5f505d204d31700661e1d3f154d8a78247e866c48e6763be4de84de59",
+                        "image": "docker.io/openshift/origin-docker-builder:v3.11.0",
+                        "imageID": "docker-pullable://docker.io/openshift/origin-docker-builder@sha256:4a68b5abdc75132e98a13e569633cb22445ebd083b30c03b121418a7e1b310e6",
+                        "lastState": {},
+                        "name": "sti-build",
+                        "ready": false,
+                        "restartCount": 0,
+                        "state": {
+                            "terminated": {
+                                "containerID": "docker://8ce5cca5f505d204d31700661e1d3f154d8a78247e866c48e6763be4de84de59",
+                                "exitCode": 0,
+                                "finishedAt": "2020-10-01T13:02:13Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-10-01T13:01:50Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.0.2.15",
+                "initContainerStatuses": [
+                    {
+                        "containerID": "docker://5a6edcb793aa331a97c0ecfd599b67208596cd60ef6712d283c9160fae6717d7",
+                        "image": "docker.io/openshift/origin-docker-builder:v3.11.0",
+                        "imageID": "docker-pullable://docker.io/openshift/origin-docker-builder@sha256:4a68b5abdc75132e98a13e569633cb22445ebd083b30c03b121418a7e1b310e6",
+                        "lastState": {},
+                        "name": "git-clone",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "terminated": {
+                                "containerID": "docker://5a6edcb793aa331a97c0ecfd599b67208596cd60ef6712d283c9160fae6717d7",
+                                "exitCode": 0,
+                                "finishedAt": "2020-10-01T13:01:47Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-10-01T13:01:45Z"
+                            }
+                        }
+                    },
+                    {
+                        "containerID": "docker://3c9dcc95972bd80b6424d96437808c5ffccc5e18ef2df42c6fa53e373105201d",
+                        "image": "docker.io/openshift/origin-docker-builder:v3.11.0",
+                        "imageID": "docker-pullable://docker.io/openshift/origin-docker-builder@sha256:4a68b5abdc75132e98a13e569633cb22445ebd083b30c03b121418a7e1b310e6",
+                        "lastState": {},
+                        "name": "manage-dockerfile",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "terminated": {
+                                "containerID": "docker://3c9dcc95972bd80b6424d96437808c5ffccc5e18ef2df42c6fa53e373105201d",
+                                "exitCode": 0,
+                                "finishedAt": "2020-10-01T13:01:49Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-10-01T13:01:48Z"
+                            }
+                        }
+                    }
+                ],
+                "phase": "Succeeded",
+                "podIP": "172.17.0.8",
+                "qosClass": "BestEffort",
+                "startTime": "2020-10-01T13:01:43Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "openshift.io/deployment-config.latest-version": "7",
+                    "openshift.io/deployment-config.name": "mynewapp",
+                    "openshift.io/deployment.name": "mynewapp-7",
+                    "openshift.io/scc": "restricted"
+                },
+                "creationTimestamp": "2020-10-02T09:58:01Z",
+                "generateName": "mynewapp-7-",
+                "labels": {
+                    "app": "mynewapp",
+                    "deployment": "mynewapp-7",
+                    "deploymentconfig": "mynewapp"
+                },
+                "name": "mynewapp-7-d785j",
+                "namespace": "mynewapp",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "ReplicationController",
+                        "name": "mynewapp-7",
+                        "uid": "bf5699c6-0495-11eb-b979-080027237a3e"
+                    }
+                ],
+                "resourceVersion": "146628",
+                "selfLink": "/api/v1/namespaces/mynewapp/pods/mynewapp-7-d785j",
+                "uid": "c20f0535-0495-11eb-b979-080027237a3e"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "env": [
+                            {
+                                "name": "PGSQL_HOST",
+                                "value": "localhost"
+                            }
+                        ],
+                        "image": "172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29",
+                        "imagePullPolicy": "Always",
+                        "name": "mynewapp",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {},
+                        "securityContext": {
+                            "capabilities": {
+                                "drop": [
+                                    "KILL",
+                                    "MKNOD",
+                                    "SETGID",
+                                    "SETUID"
+                                ]
+                            },
+                            "runAsUser": 1000160000
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-wtnjk",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "imagePullSecrets": [
+                    {
+                        "name": "default-dockercfg-4dz6d"
+                    }
+                ],
+                "nodeName": "localhost",
+                "priority": 0,
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {
+                    "fsGroup": 1000160000,
+                    "seLinuxOptions": {
+                        "level": "s0:c13,c2"
+                    }
+                },
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "volumes": [
+                    {
+                        "name": "default-token-wtnjk",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "default-token-wtnjk"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2020-10-02T09:58:01Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2020-10-02T09:58:04Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": null,
+                        "status": "True",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2020-10-02T09:58:01Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://66844526835dbd1123844890cad80608a6e917d3fdb5d5428c497e8208e0e868",
+                        "image": "172.30.1.1:5000/mynewapp/mynewapp:latest",
+                        "imageID": "docker-pullable://172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29",
+                        "lastState": {},
+                        "name": "mynewapp",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "running": {
+                                "startedAt": "2020-10-02T09:58:03Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.0.2.15",
+                "phase": "Running",
+                "podIP": "172.17.0.16",
+                "qosClass": "BestEffort",
+                "startTime": "2020-10-02T09:58:01Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "ReplicationController",
+            "metadata": {
+                "annotations": {
+                    "openshift.io/deployer-pod.completed-at": "2020-10-01 14:43:04 +0000 UTC",
+                    "openshift.io/deployer-pod.created-at": "2020-10-01 14:42:10 +0000 UTC",
+                    "openshift.io/deployer-pod.name": "mydb-1-deploy",
+                    "openshift.io/deployment-config.latest-version": "1",
+                    "openshift.io/deployment-config.name": "mydb",
+                    "openshift.io/deployment.phase": "Complete",
+                    "openshift.io/deployment.replicas": "1",
+                    "openshift.io/deployment.status-reason": "config change",
+                    "openshift.io/encoded-deployment-config": "{\"kind\":\"DeploymentConfig\",\"apiVersion\":\"apps.openshift.io/v1\",\"metadata\":{\"name\":\"mydb\",\"namespace\":\"mynewapp\",\"selfLink\":\"/apis/apps.openshift.io/v1/namespaces/mynewapp/deploymentconfigs/mydb\",\"uid\":\"48fcf15f-03f4-11eb-b143-080027237a3e\",\"resourceVersion\":\"95041\",\"generation\":2,\"creationTimestamp\":\"2020-10-01T14:42:09Z\",\"labels\":{\"app\":\"postgresql-persistent\",\"template\":\"postgresql-persistent-template\"},\"annotations\":{\"template.alpha.openshift.io/wait-for-ready\":\"true\"}},\"spec\":{\"strategy\":{\"type\":\"Recreate\",\"recreateParams\":{\"timeoutSeconds\":600},\"resources\":{},\"activeDeadlineSeconds\":21600},\"triggers\":[{\"type\":\"ImageChange\",\"imageChangeParams\":{\"automatic\":true,\"containerNames\":[\"postgresql\"],\"from\":{\"kind\":\"ImageStreamTag\",\"namespace\":\"openshift\",\"name\":\"postgresql:9.6\"},\"lastTriggeredImage\":\"172.30.1.1:5000/openshift/postgresql@sha256:b681d78125361519180a6ac05242c296f8906c11eab7e207b5ca9a89b6344392\"}},{\"type\":\"ConfigChange\"}],\"replicas\":1,\"revisionHistoryLimit\":10,\"test\":false,\"selector\":{\"name\":\"mydb\"},\"template\":{\"metadata\":{\"creationTimestamp\":null,\"labels\":{\"name\":\"mydb\"}},\"spec\":{\"volumes\":[{\"name\":\"mydb-data\",\"persistentVolumeClaim\":{\"claimName\":\"mydb\"}}],\"containers\":[{\"name\":\"postgresql\",\"image\":\"172.30.1.1:5000/openshift/postgresql@sha256:b681d78125361519180a6ac05242c296f8906c11eab7e207b5ca9a89b6344392\",\"ports\":[{\"containerPort\":5432,\"protocol\":\"TCP\"}],\"env\":[{\"name\":\"POSTGRESQL_USER\",\"valueFrom\":{\"secretKeyRef\":{\"name\":\"mydb\",\"key\":\"database-user\"}}},{\"name\":\"POSTGRESQL_PASSWORD\",\"valueFrom\":{\"secretKeyRef\":{\"name\":\"mydb\",\"key\":\"database-password\"}}},{\"name\":\"POSTGRESQL_DATABASE\",\"valueFrom\":{\"secretKeyRef\":{\"name\":\"mydb\",\"key\":\"database-name\"}}}],\"resources\":{\"limits\":{\"memory\":\"512Mi\"}},\"volumeMounts\":[{\"name\":\"mydb-data\",\"mountPath\":\"/var/lib/pgsql/data\"}],\"livenessProbe\":{\"exec\":{\"command\":[\"/usr/libexec/check-container\",\"--live\"]},\"initialDelaySeconds\":120,\"timeoutSeconds\":10,\"periodSeconds\":10,\"successThreshold\":1,\"failureThreshold\":3},\"readinessProbe\":{\"exec\":{\"command\":[\"/usr/libexec/check-container\"]},\"initialDelaySeconds\":5,\"timeoutSeconds\":1,\"periodSeconds\":10,\"successThreshold\":1,\"failureThreshold\":3},\"terminationMessagePath\":\"/dev/termination-log\",\"terminationMessagePolicy\":\"File\",\"imagePullPolicy\":\"IfNotPresent\",\"securityContext\":{\"capabilities\":{},\"privileged\":false}}],\"restartPolicy\":\"Always\",\"terminationGracePeriodSeconds\":30,\"dnsPolicy\":\"ClusterFirst\",\"securityContext\":{},\"schedulerName\":\"default-scheduler\"}}},\"status\":{\"latestVersion\":1,\"observedGeneration\":0,\"replicas\":0,\"updatedReplicas\":0,\"availableReplicas\":0,\"unavailableReplicas\":0,\"details\":{\"message\":\"config change\",\"causes\":[{\"type\":\"ConfigChange\"}]}}}\n"
+                },
+                "creationTimestamp": "2020-10-01T14:42:10Z",
+                "generation": 2,
+                "labels": {
+                    "app": "postgresql-persistent",
+                    "openshift.io/deployment-config.name": "mydb",
+                    "template": "postgresql-persistent-template"
+                },
+                "name": "mydb-1",
+                "namespace": "mynewapp",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps.openshift.io/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "DeploymentConfig",
+                        "name": "mydb",
+                        "uid": "48fcf15f-03f4-11eb-b143-080027237a3e"
+                    }
+                ],
+                "resourceVersion": "123561",
+                "selfLink": "/api/v1/namespaces/mynewapp/replicationcontrollers/mydb-1",
+                "uid": "4975ad01-03f4-11eb-950d-080027237a3e"
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {
+                    "deployment": "mydb-1",
+                    "deploymentconfig": "mydb",
+                    "name": "mydb"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "openshift.io/deployment-config.latest-version": "1",
+                            "openshift.io/deployment-config.name": "mydb",
+                            "openshift.io/deployment.name": "mydb-1"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "deployment": "mydb-1",
+                            "deploymentconfig": "mydb",
+                            "name": "mydb"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "env": [
+                                    {
+                                        "name": "POSTGRESQL_USER",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "database-user",
+                                                "name": "mydb"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "POSTGRESQL_PASSWORD",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "database-password",
+                                                "name": "mydb"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "POSTGRESQL_DATABASE",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "database-name",
+                                                "name": "mydb"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "image": "172.30.1.1:5000/openshift/postgresql@sha256:b681d78125361519180a6ac05242c296f8906c11eab7e207b5ca9a89b6344392",
+                                "imagePullPolicy": "IfNotPresent",
+                                "livenessProbe": {
+                                    "exec": {
+                                        "command": [
+                                            "/usr/libexec/check-container",
+                                            "--live"
+                                        ]
+                                    },
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 120,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 10
+                                },
+                                "name": "postgresql",
+                                "ports": [
+                                    {
+                                        "containerPort": 5432,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "exec": {
+                                        "command": [
+                                            "/usr/libexec/check-container"
+                                        ]
+                                    },
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 5,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "memory": "512Mi"
+                                    }
+                                },
+                                "securityContext": {
+                                    "capabilities": {},
+                                    "privileged": false
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/var/lib/pgsql/data",
+                                        "name": "mydb-data"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30,
+                        "volumes": [
+                            {
+                                "name": "mydb-data",
+                                "persistentVolumeClaim": {
+                                    "claimName": "mydb"
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "fullyLabeledReplicas": 1,
+                "observedGeneration": 2,
+                "readyReplicas": 1,
+                "replicas": 1
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "ReplicationController",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/original-replicas": "1",
+                    "openshift.io/deployer-pod.completed-at": "2020-10-01 12:43:25 +0000 UTC",
+                    "openshift.io/deployer-pod.created-at": "2020-10-01 12:43:21 +0000 UTC",
+                    "openshift.io/deployer-pod.name": "mynewapp-1-deploy",
+                    "openshift.io/deployment-config.latest-version": "1",
+                    "openshift.io/deployment-config.name": "mynewapp",
+                    "openshift.io/deployment.phase": "Complete",
+                    "openshift.io/deployment.replicas": "1",
+                    "openshift.io/deployment.status-reason": "config change",
+                    "openshift.io/encoded-deployment-config": "{\"kind\":\"DeploymentConfig\",\"apiVersion\":\"apps.openshift.io/v1\",\"metadata\":{\"name\":\"mynewapp\",\"namespace\":\"mynewapp\",\"selfLink\":\"/apis/apps.openshift.io/v1/namespaces/mynewapp/deploymentconfigs/mynewapp\",\"uid\":\"93a2b2a8-03e1-11eb-b143-080027237a3e\",\"resourceVersion\":\"65680\",\"generation\":2,\"creationTimestamp\":\"2020-10-01T12:28:14Z\",\"labels\":{\"app\":\"mynewapp\"},\"annotations\":{\"openshift.io/generated-by\":\"OpenShiftWebConsole\"}},\"spec\":{\"strategy\":{\"type\":\"Rolling\",\"rollingParams\":{\"updatePeriodSeconds\":1,\"intervalSeconds\":1,\"timeoutSeconds\":600,\"maxUnavailable\":\"25%\",\"maxSurge\":\"25%\"},\"resources\":{},\"activeDeadlineSeconds\":21600},\"triggers\":[{\"type\":\"ImageChange\",\"imageChangeParams\":{\"automatic\":true,\"containerNames\":[\"mynewapp\"],\"from\":{\"kind\":\"ImageStreamTag\",\"namespace\":\"mynewapp\",\"name\":\"mynewapp:latest\"},\"lastTriggeredImage\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:7f1c73d9b3ae51011f266161bd7d6aa1b4643ce6f1b8e7a204bc56253fa51f66\"}},{\"type\":\"ConfigChange\"}],\"replicas\":1,\"test\":false,\"selector\":{\"deploymentconfig\":\"mynewapp\"},\"template\":{\"metadata\":{\"creationTimestamp\":null,\"labels\":{\"app\":\"mynewapp\",\"deploymentconfig\":\"mynewapp\"}},\"spec\":{\"containers\":[{\"name\":\"mynewapp\",\"image\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:7f1c73d9b3ae51011f266161bd7d6aa1b4643ce6f1b8e7a204bc56253fa51f66\",\"ports\":[{\"containerPort\":8080,\"protocol\":\"TCP\"}],\"resources\":{},\"terminationMessagePath\":\"/dev/termination-log\",\"terminationMessagePolicy\":\"File\",\"imagePullPolicy\":\"Always\"}],\"restartPolicy\":\"Always\",\"terminationGracePeriodSeconds\":30,\"dnsPolicy\":\"ClusterFirst\",\"securityContext\":{},\"schedulerName\":\"default-scheduler\"}}},\"status\":{\"latestVersion\":1,\"observedGeneration\":1,\"replicas\":0,\"updatedReplicas\":0,\"availableReplicas\":0,\"unavailableReplicas\":0,\"details\":{\"message\":\"config change\",\"causes\":[{\"type\":\"ConfigChange\"}]},\"conditions\":[{\"type\":\"Available\",\"status\":\"False\",\"lastUpdateTime\":\"2020-10-01T12:28:14Z\",\"lastTransitionTime\":\"2020-10-01T12:28:14Z\",\"message\":\"Deployment config does not have minimum availability.\"}]}}\n"
+                },
+                "creationTimestamp": "2020-10-01T12:43:21Z",
+                "generation": 3,
+                "labels": {
+                    "app": "mynewapp",
+                    "openshift.io/deployment-config.name": "mynewapp"
+                },
+                "name": "mynewapp-1",
+                "namespace": "mynewapp",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps.openshift.io/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "DeploymentConfig",
+                        "name": "mynewapp",
+                        "uid": "93a2b2a8-03e1-11eb-b143-080027237a3e"
+                    }
+                ],
+                "resourceVersion": "70374",
+                "selfLink": "/api/v1/namespaces/mynewapp/replicationcontrollers/mynewapp-1",
+                "uid": "b02ad710-03e3-11eb-950d-080027237a3e"
+            },
+            "spec": {
+                "replicas": 0,
+                "selector": {
+                    "deployment": "mynewapp-1",
+                    "deploymentconfig": "mynewapp"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "openshift.io/deployment-config.latest-version": "1",
+                            "openshift.io/deployment-config.name": "mynewapp",
+                            "openshift.io/deployment.name": "mynewapp-1"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "mynewapp",
+                            "deployment": "mynewapp-1",
+                            "deploymentconfig": "mynewapp"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "image": "172.30.1.1:5000/mynewapp/mynewapp@sha256:7f1c73d9b3ae51011f266161bd7d6aa1b4643ce6f1b8e7a204bc56253fa51f66",
+                                "imagePullPolicy": "Always",
+                                "name": "mynewapp",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "observedGeneration": 3,
+                "replicas": 0
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "ReplicationController",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/original-replicas": "1",
+                    "openshift.io/deployer-pod.completed-at": "2020-10-01 13:02:19 +0000 UTC",
+                    "openshift.io/deployer-pod.created-at": "2020-10-01 13:02:13 +0000 UTC",
+                    "openshift.io/deployer-pod.name": "mynewapp-2-deploy",
+                    "openshift.io/deployment-config.latest-version": "2",
+                    "openshift.io/deployment-config.name": "mynewapp",
+                    "openshift.io/deployment.phase": "Complete",
+                    "openshift.io/deployment.replicas": "",
+                    "openshift.io/deployment.status-reason": "image change",
+                    "openshift.io/encoded-deployment-config": "{\"kind\":\"DeploymentConfig\",\"apiVersion\":\"apps.openshift.io/v1\",\"metadata\":{\"name\":\"mynewapp\",\"namespace\":\"mynewapp\",\"selfLink\":\"/apis/apps.openshift.io/v1/namespaces/mynewapp/deploymentconfigs/mynewapp\",\"uid\":\"93a2b2a8-03e1-11eb-b143-080027237a3e\",\"resourceVersion\":\"70314\",\"generation\":3,\"creationTimestamp\":\"2020-10-01T12:28:14Z\",\"labels\":{\"app\":\"mynewapp\"},\"annotations\":{\"openshift.io/generated-by\":\"OpenShiftWebConsole\"}},\"spec\":{\"strategy\":{\"type\":\"Rolling\",\"rollingParams\":{\"updatePeriodSeconds\":1,\"intervalSeconds\":1,\"timeoutSeconds\":600,\"maxUnavailable\":\"25%\",\"maxSurge\":\"25%\"},\"resources\":{},\"activeDeadlineSeconds\":21600},\"triggers\":[{\"type\":\"ImageChange\",\"imageChangeParams\":{\"automatic\":true,\"containerNames\":[\"mynewapp\"],\"from\":{\"kind\":\"ImageStreamTag\",\"namespace\":\"mynewapp\",\"name\":\"mynewapp:latest\"},\"lastTriggeredImage\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\"}},{\"type\":\"ConfigChange\"}],\"replicas\":1,\"test\":false,\"selector\":{\"deploymentconfig\":\"mynewapp\"},\"template\":{\"metadata\":{\"creationTimestamp\":null,\"labels\":{\"app\":\"mynewapp\",\"deploymentconfig\":\"mynewapp\"}},\"spec\":{\"containers\":[{\"name\":\"mynewapp\",\"image\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\",\"ports\":[{\"containerPort\":8080,\"protocol\":\"TCP\"}],\"resources\":{},\"terminationMessagePath\":\"/dev/termination-log\",\"terminationMessagePolicy\":\"File\",\"imagePullPolicy\":\"Always\"}],\"restartPolicy\":\"Always\",\"terminationGracePeriodSeconds\":30,\"dnsPolicy\":\"ClusterFirst\",\"securityContext\":{},\"schedulerName\":\"default-scheduler\"}}},\"status\":{\"latestVersion\":2,\"observedGeneration\":2,\"replicas\":1,\"updatedReplicas\":1,\"availableReplicas\":1,\"unavailableReplicas\":0,\"details\":{\"message\":\"image change\",\"causes\":[{\"type\":\"ImageChange\",\"imageTrigger\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\"}}}]},\"conditions\":[{\"type\":\"Available\",\"status\":\"True\",\"lastUpdateTime\":\"2020-10-01T12:43:25Z\",\"lastTransitionTime\":\"2020-10-01T12:43:25Z\",\"message\":\"Deployment config has minimum availability.\"},{\"type\":\"Progressing\",\"status\":\"True\",\"lastUpdateTime\":\"2020-10-01T12:43:26Z\",\"lastTransitionTime\":\"2020-10-01T12:43:23Z\",\"reason\":\"NewReplicationControllerAvailable\",\"message\":\"replication controller \\\"mynewapp-1\\\" successfully rolled out\"}],\"readyReplicas\":1}}\n"
+                },
+                "creationTimestamp": "2020-10-01T13:02:13Z",
+                "generation": 3,
+                "labels": {
+                    "app": "mynewapp",
+                    "openshift.io/deployment-config.name": "mynewapp"
+                },
+                "name": "mynewapp-2",
+                "namespace": "mynewapp",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps.openshift.io/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "DeploymentConfig",
+                        "name": "mynewapp",
+                        "uid": "93a2b2a8-03e1-11eb-b143-080027237a3e"
+                    }
+                ],
+                "resourceVersion": "126999",
+                "selfLink": "/api/v1/namespaces/mynewapp/replicationcontrollers/mynewapp-2",
+                "uid": "530506aa-03e6-11eb-950d-080027237a3e"
+            },
+            "spec": {
+                "replicas": 0,
+                "selector": {
+                    "deployment": "mynewapp-2",
+                    "deploymentconfig": "mynewapp"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "openshift.io/deployment-config.latest-version": "2",
+                            "openshift.io/deployment-config.name": "mynewapp",
+                            "openshift.io/deployment.name": "mynewapp-2"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "mynewapp",
+                            "deployment": "mynewapp-2",
+                            "deploymentconfig": "mynewapp"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "image": "172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29",
+                                "imagePullPolicy": "Always",
+                                "name": "mynewapp",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "observedGeneration": 3,
+                "replicas": 0
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "ReplicationController",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/original-replicas": "1",
+                    "openshift.io/deployer-pod.completed-at": "2020-10-02 08:37:48 +0000 UTC",
+                    "openshift.io/deployer-pod.created-at": "2020-10-02 08:37:40 +0000 UTC",
+                    "openshift.io/deployer-pod.name": "mynewapp-3-deploy",
+                    "openshift.io/deployment-config.latest-version": "3",
+                    "openshift.io/deployment-config.name": "mynewapp",
+                    "openshift.io/deployment.phase": "Complete",
+                    "openshift.io/deployment.replicas": "",
+                    "openshift.io/deployment.status-reason": "image change",
+                    "openshift.io/encoded-deployment-config": "{\"kind\":\"DeploymentConfig\",\"apiVersion\":\"apps.openshift.io/v1\",\"metadata\":{\"name\":\"mynewapp\",\"namespace\":\"mynewapp\",\"selfLink\":\"/apis/apps.openshift.io/v1/namespaces/mynewapp/deploymentconfigs/mynewapp\",\"uid\":\"93a2b2a8-03e1-11eb-b143-080027237a3e\",\"resourceVersion\":\"126934\",\"generation\":4,\"creationTimestamp\":\"2020-10-01T12:28:14Z\",\"labels\":{\"app\":\"mynewapp\"},\"annotations\":{\"openshift.io/generated-by\":\"OpenShiftWebConsole\"}},\"spec\":{\"strategy\":{\"type\":\"Rolling\",\"rollingParams\":{\"updatePeriodSeconds\":1,\"intervalSeconds\":1,\"timeoutSeconds\":600,\"maxUnavailable\":\"25%\",\"maxSurge\":\"25%\"},\"resources\":{},\"activeDeadlineSeconds\":21600},\"triggers\":[{\"type\":\"ImageChange\",\"imageChangeParams\":{\"containerNames\":[\"mynewapp\"],\"from\":{\"kind\":\"ImageStreamTag\",\"namespace\":\"mynewapp\",\"name\":\"mynewapp:latest\"},\"lastTriggeredImage\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\"}},{\"type\":\"ConfigChange\"}],\"replicas\":1,\"test\":false,\"selector\":{\"deploymentconfig\":\"mynewapp\"},\"template\":{\"metadata\":{\"creationTimestamp\":null,\"labels\":{\"app\":\"mynewapp\",\"deploymentconfig\":\"mynewapp\"}},\"spec\":{\"containers\":[{\"name\":\"mynewapp\",\"image\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:7f1c73d9b3ae51011f266161bd7d6aa1b4643ce6f1b8e7a204bc56253fa51f66\",\"ports\":[{\"containerPort\":8080,\"protocol\":\"TCP\"}],\"resources\":{},\"terminationMessagePath\":\"/dev/termination-log\",\"terminationMessagePolicy\":\"File\",\"imagePullPolicy\":\"Always\"}],\"restartPolicy\":\"Always\",\"terminationGracePeriodSeconds\":30,\"dnsPolicy\":\"ClusterFirst\",\"securityContext\":{},\"schedulerName\":\"default-scheduler\"}}},\"status\":{\"latestVersion\":3,\"observedGeneration\":3,\"replicas\":1,\"updatedReplicas\":1,\"availableReplicas\":1,\"unavailableReplicas\":0,\"details\":{\"message\":\"image change\",\"causes\":[{\"type\":\"ImageChange\",\"imageTrigger\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\"}}}]},\"conditions\":[{\"type\":\"Progressing\",\"status\":\"True\",\"lastUpdateTime\":\"2020-10-01T13:02:19Z\",\"lastTransitionTime\":\"2020-10-01T13:02:17Z\",\"reason\":\"NewReplicationControllerAvailable\",\"message\":\"replication controller \\\"mynewapp-2\\\" successfully rolled out\"},{\"type\":\"Available\",\"status\":\"True\",\"lastUpdateTime\":\"2020-10-02T08:25:01Z\",\"lastTransitionTime\":\"2020-10-02T08:25:01Z\",\"message\":\"Deployment config has minimum availability.\"}],\"readyReplicas\":1}}\n"
+                },
+                "creationTimestamp": "2020-10-02T08:37:39Z",
+                "generation": 3,
+                "labels": {
+                    "app": "mynewapp",
+                    "openshift.io/deployment-config.name": "mynewapp"
+                },
+                "name": "mynewapp-3",
+                "namespace": "mynewapp",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps.openshift.io/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "DeploymentConfig",
+                        "name": "mynewapp",
+                        "uid": "93a2b2a8-03e1-11eb-b143-080027237a3e"
+                    }
+                ],
+                "resourceVersion": "127211",
+                "selfLink": "/api/v1/namespaces/mynewapp/replicationcontrollers/mynewapp-3",
+                "uid": "88111f26-048a-11eb-b979-080027237a3e"
+            },
+            "spec": {
+                "replicas": 0,
+                "selector": {
+                    "deployment": "mynewapp-3",
+                    "deploymentconfig": "mynewapp"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "openshift.io/deployment-config.latest-version": "3",
+                            "openshift.io/deployment-config.name": "mynewapp",
+                            "openshift.io/deployment.name": "mynewapp-3"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "mynewapp",
+                            "deployment": "mynewapp-3",
+                            "deploymentconfig": "mynewapp"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "image": "172.30.1.1:5000/mynewapp/mynewapp@sha256:7f1c73d9b3ae51011f266161bd7d6aa1b4643ce6f1b8e7a204bc56253fa51f66",
+                                "imagePullPolicy": "Always",
+                                "name": "mynewapp",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "observedGeneration": 3,
+                "replicas": 0
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "ReplicationController",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/original-replicas": "1",
+                    "openshift.io/deployer-pod.completed-at": "2020-10-02 08:38:27 +0000 UTC",
+                    "openshift.io/deployer-pod.created-at": "2020-10-02 08:38:20 +0000 UTC",
+                    "openshift.io/deployer-pod.name": "mynewapp-4-deploy",
+                    "openshift.io/deployment-config.latest-version": "4",
+                    "openshift.io/deployment-config.name": "mynewapp",
+                    "openshift.io/deployment.phase": "Complete",
+                    "openshift.io/deployment.replicas": "",
+                    "openshift.io/deployment.status-reason": "image change",
+                    "openshift.io/encoded-deployment-config": "{\"kind\":\"DeploymentConfig\",\"apiVersion\":\"apps.openshift.io/v1\",\"metadata\":{\"name\":\"mynewapp\",\"namespace\":\"mynewapp\",\"selfLink\":\"/apis/apps.openshift.io/v1/namespaces/mynewapp/deploymentconfigs/mynewapp\",\"uid\":\"93a2b2a8-03e1-11eb-b143-080027237a3e\",\"resourceVersion\":\"127150\",\"generation\":5,\"creationTimestamp\":\"2020-10-01T12:28:14Z\",\"labels\":{\"app\":\"mynewapp\"},\"annotations\":{\"openshift.io/generated-by\":\"OpenShiftWebConsole\"}},\"spec\":{\"strategy\":{\"type\":\"Rolling\",\"rollingParams\":{\"updatePeriodSeconds\":1,\"intervalSeconds\":1,\"timeoutSeconds\":600,\"maxUnavailable\":\"25%\",\"maxSurge\":\"25%\"},\"resources\":{},\"activeDeadlineSeconds\":21600},\"triggers\":[{\"type\":\"ImageChange\",\"imageChangeParams\":{\"containerNames\":[\"mynewapp\"],\"from\":{\"kind\":\"ImageStreamTag\",\"namespace\":\"mynewapp\",\"name\":\"mynewapp:latest\"},\"lastTriggeredImage\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\"}},{\"type\":\"ConfigChange\"}],\"replicas\":1,\"test\":false,\"selector\":{\"deploymentconfig\":\"mynewapp\"},\"template\":{\"metadata\":{\"creationTimestamp\":null,\"labels\":{\"app\":\"mynewapp\",\"deploymentconfig\":\"mynewapp\"}},\"spec\":{\"containers\":[{\"name\":\"mynewapp\",\"image\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\",\"ports\":[{\"containerPort\":8080,\"protocol\":\"TCP\"}],\"resources\":{},\"terminationMessagePath\":\"/dev/termination-log\",\"terminationMessagePolicy\":\"File\",\"imagePullPolicy\":\"Always\"}],\"restartPolicy\":\"Always\",\"terminationGracePeriodSeconds\":30,\"dnsPolicy\":\"ClusterFirst\",\"securityContext\":{},\"schedulerName\":\"default-scheduler\"}}},\"status\":{\"latestVersion\":4,\"observedGeneration\":4,\"replicas\":1,\"updatedReplicas\":1,\"availableReplicas\":1,\"unavailableReplicas\":0,\"details\":{\"message\":\"image change\",\"causes\":[{\"type\":\"ImageChange\",\"imageTrigger\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\"}}}]},\"conditions\":[{\"type\":\"Available\",\"status\":\"True\",\"lastUpdateTime\":\"2020-10-02T08:25:01Z\",\"lastTransitionTime\":\"2020-10-02T08:25:01Z\",\"message\":\"Deployment config has minimum availability.\"},{\"type\":\"Progressing\",\"status\":\"True\",\"lastUpdateTime\":\"2020-10-02T08:37:49Z\",\"lastTransitionTime\":\"2020-10-02T08:37:46Z\",\"reason\":\"NewReplicationControllerAvailable\",\"message\":\"replication controller \\\"mynewapp-3\\\" successfully rolled out\"}],\"readyReplicas\":1}}\n"
+                },
+                "creationTimestamp": "2020-10-02T08:38:20Z",
+                "generation": 3,
+                "labels": {
+                    "app": "mynewapp",
+                    "openshift.io/deployment-config.name": "mynewapp"
+                },
+                "name": "mynewapp-4",
+                "namespace": "mynewapp",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps.openshift.io/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "DeploymentConfig",
+                        "name": "mynewapp",
+                        "uid": "93a2b2a8-03e1-11eb-b143-080027237a3e"
+                    }
+                ],
+                "resourceVersion": "127344",
+                "selfLink": "/api/v1/namespaces/mynewapp/replicationcontrollers/mynewapp-4",
+                "uid": "a0615acf-048a-11eb-b979-080027237a3e"
+            },
+            "spec": {
+                "replicas": 0,
+                "selector": {
+                    "deployment": "mynewapp-4",
+                    "deploymentconfig": "mynewapp"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "openshift.io/deployment-config.latest-version": "4",
+                            "openshift.io/deployment-config.name": "mynewapp",
+                            "openshift.io/deployment.name": "mynewapp-4"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "mynewapp",
+                            "deployment": "mynewapp-4",
+                            "deploymentconfig": "mynewapp"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "image": "172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29",
+                                "imagePullPolicy": "Always",
+                                "name": "mynewapp",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "observedGeneration": 3,
+                "replicas": 0
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "ReplicationController",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/original-replicas": "1",
+                    "openshift.io/deployer-pod.completed-at": "2020-10-02 08:38:48 +0000 UTC",
+                    "openshift.io/deployer-pod.created-at": "2020-10-02 08:38:41 +0000 UTC",
+                    "openshift.io/deployer-pod.name": "mynewapp-5-deploy",
+                    "openshift.io/deployment-config.latest-version": "5",
+                    "openshift.io/deployment-config.name": "mynewapp",
+                    "openshift.io/deployment.phase": "Complete",
+                    "openshift.io/deployment.replicas": "",
+                    "openshift.io/deployment.status-reason": "image change",
+                    "openshift.io/encoded-deployment-config": "{\"kind\":\"DeploymentConfig\",\"apiVersion\":\"apps.openshift.io/v1\",\"metadata\":{\"name\":\"mynewapp\",\"namespace\":\"mynewapp\",\"selfLink\":\"/apis/apps.openshift.io/v1/namespaces/mynewapp/deploymentconfigs/mynewapp\",\"uid\":\"93a2b2a8-03e1-11eb-b143-080027237a3e\",\"resourceVersion\":\"127284\",\"generation\":6,\"creationTimestamp\":\"2020-10-01T12:28:14Z\",\"labels\":{\"app\":\"mynewapp\"},\"annotations\":{\"openshift.io/generated-by\":\"OpenShiftWebConsole\"}},\"spec\":{\"strategy\":{\"type\":\"Rolling\",\"rollingParams\":{\"updatePeriodSeconds\":1,\"intervalSeconds\":1,\"timeoutSeconds\":600,\"maxUnavailable\":\"25%\",\"maxSurge\":\"25%\"},\"resources\":{},\"activeDeadlineSeconds\":21600},\"triggers\":[{\"type\":\"ImageChange\",\"imageChangeParams\":{\"containerNames\":[\"mynewapp\"],\"from\":{\"kind\":\"ImageStreamTag\",\"namespace\":\"mynewapp\",\"name\":\"mynewapp:latest\"},\"lastTriggeredImage\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\"}},{\"type\":\"ConfigChange\"}],\"replicas\":1,\"test\":false,\"selector\":{\"deploymentconfig\":\"mynewapp\"},\"template\":{\"metadata\":{\"creationTimestamp\":null,\"labels\":{\"app\":\"mynewapp\",\"deploymentconfig\":\"mynewapp\"}},\"spec\":{\"containers\":[{\"name\":\"mynewapp\",\"image\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:7f1c73d9b3ae51011f266161bd7d6aa1b4643ce6f1b8e7a204bc56253fa51f66\",\"ports\":[{\"containerPort\":8080,\"protocol\":\"TCP\"}],\"resources\":{},\"terminationMessagePath\":\"/dev/termination-log\",\"terminationMessagePolicy\":\"File\",\"imagePullPolicy\":\"Always\"}],\"restartPolicy\":\"Always\",\"terminationGracePeriodSeconds\":30,\"dnsPolicy\":\"ClusterFirst\",\"securityContext\":{},\"schedulerName\":\"default-scheduler\"}}},\"status\":{\"latestVersion\":5,\"observedGeneration\":5,\"replicas\":1,\"updatedReplicas\":1,\"availableReplicas\":1,\"unavailableReplicas\":0,\"details\":{\"message\":\"image change\",\"causes\":[{\"type\":\"ImageChange\",\"imageTrigger\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\"}}}]},\"conditions\":[{\"type\":\"Available\",\"status\":\"True\",\"lastUpdateTime\":\"2020-10-02T08:25:01Z\",\"lastTransitionTime\":\"2020-10-02T08:25:01Z\",\"message\":\"Deployment config has minimum availability.\"},{\"type\":\"Progressing\",\"status\":\"True\",\"lastUpdateTime\":\"2020-10-02T08:38:28Z\",\"lastTransitionTime\":\"2020-10-02T08:38:25Z\",\"reason\":\"NewReplicationControllerAvailable\",\"message\":\"replication controller \\\"mynewapp-4\\\" successfully rolled out\"}],\"readyReplicas\":1}}\n"
+                },
+                "creationTimestamp": "2020-10-02T08:38:41Z",
+                "generation": 3,
+                "labels": {
+                    "app": "mynewapp",
+                    "openshift.io/deployment-config.name": "mynewapp"
+                },
+                "name": "mynewapp-5",
+                "namespace": "mynewapp",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps.openshift.io/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "DeploymentConfig",
+                        "name": "mynewapp",
+                        "uid": "93a2b2a8-03e1-11eb-b143-080027237a3e"
+                    }
+                ],
+                "resourceVersion": "127831",
+                "selfLink": "/api/v1/namespaces/mynewapp/replicationcontrollers/mynewapp-5",
+                "uid": "aca931de-048a-11eb-b979-080027237a3e"
+            },
+            "spec": {
+                "replicas": 0,
+                "selector": {
+                    "deployment": "mynewapp-5",
+                    "deploymentconfig": "mynewapp"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "openshift.io/deployment-config.latest-version": "5",
+                            "openshift.io/deployment-config.name": "mynewapp",
+                            "openshift.io/deployment.name": "mynewapp-5"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "mynewapp",
+                            "deployment": "mynewapp-5",
+                            "deploymentconfig": "mynewapp"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "image": "172.30.1.1:5000/mynewapp/mynewapp@sha256:7f1c73d9b3ae51011f266161bd7d6aa1b4643ce6f1b8e7a204bc56253fa51f66",
+                                "imagePullPolicy": "Always",
+                                "name": "mynewapp",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "observedGeneration": 3,
+                "replicas": 0
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "ReplicationController",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/original-replicas": "1",
+                    "openshift.io/deployer-pod.completed-at": "2020-10-02 08:40:35 +0000 UTC",
+                    "openshift.io/deployer-pod.created-at": "2020-10-02 08:40:28 +0000 UTC",
+                    "openshift.io/deployer-pod.name": "mynewapp-6-deploy",
+                    "openshift.io/deployment-config.latest-version": "6",
+                    "openshift.io/deployment-config.name": "mynewapp",
+                    "openshift.io/deployment.phase": "Complete",
+                    "openshift.io/deployment.replicas": "",
+                    "openshift.io/deployment.status-reason": "image change",
+                    "openshift.io/encoded-deployment-config": "{\"kind\":\"DeploymentConfig\",\"apiVersion\":\"apps.openshift.io/v1\",\"metadata\":{\"name\":\"mynewapp\",\"namespace\":\"mynewapp\",\"selfLink\":\"/apis/apps.openshift.io/v1/namespaces/mynewapp/deploymentconfigs/mynewapp\",\"uid\":\"93a2b2a8-03e1-11eb-b143-080027237a3e\",\"resourceVersion\":\"127771\",\"generation\":7,\"creationTimestamp\":\"2020-10-01T12:28:14Z\",\"labels\":{\"app\":\"mynewapp\"},\"annotations\":{\"openshift.io/generated-by\":\"OpenShiftWebConsole\"}},\"spec\":{\"strategy\":{\"type\":\"Rolling\",\"rollingParams\":{\"updatePeriodSeconds\":1,\"intervalSeconds\":1,\"timeoutSeconds\":600,\"maxUnavailable\":\"25%\",\"maxSurge\":\"25%\"},\"resources\":{},\"activeDeadlineSeconds\":21600},\"triggers\":[{\"type\":\"ImageChange\",\"imageChangeParams\":{\"containerNames\":[\"mynewapp\"],\"from\":{\"kind\":\"ImageStreamTag\",\"namespace\":\"mynewapp\",\"name\":\"mynewapp:latest\"},\"lastTriggeredImage\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\"}},{\"type\":\"ConfigChange\"}],\"replicas\":1,\"test\":false,\"selector\":{\"deploymentconfig\":\"mynewapp\"},\"template\":{\"metadata\":{\"creationTimestamp\":null,\"labels\":{\"app\":\"mynewapp\",\"deploymentconfig\":\"mynewapp\"}},\"spec\":{\"containers\":[{\"name\":\"mynewapp\",\"image\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\",\"ports\":[{\"containerPort\":8080,\"protocol\":\"TCP\"}],\"resources\":{},\"terminationMessagePath\":\"/dev/termination-log\",\"terminationMessagePolicy\":\"File\",\"imagePullPolicy\":\"Always\"}],\"restartPolicy\":\"Always\",\"terminationGracePeriodSeconds\":30,\"dnsPolicy\":\"ClusterFirst\",\"securityContext\":{},\"schedulerName\":\"default-scheduler\"}}},\"status\":{\"latestVersion\":6,\"observedGeneration\":6,\"replicas\":1,\"updatedReplicas\":1,\"availableReplicas\":1,\"unavailableReplicas\":0,\"details\":{\"message\":\"image change\",\"causes\":[{\"type\":\"ImageChange\",\"imageTrigger\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\"}}}]},\"conditions\":[{\"type\":\"Available\",\"status\":\"True\",\"lastUpdateTime\":\"2020-10-02T08:25:01Z\",\"lastTransitionTime\":\"2020-10-02T08:25:01Z\",\"message\":\"Deployment config has minimum availability.\"},{\"type\":\"Progressing\",\"status\":\"True\",\"lastUpdateTime\":\"2020-10-02T08:38:49Z\",\"lastTransitionTime\":\"2020-10-02T08:38:46Z\",\"reason\":\"NewReplicationControllerAvailable\",\"message\":\"replication controller \\\"mynewapp-5\\\" successfully rolled out\"}],\"readyReplicas\":1}}\n"
+                },
+                "creationTimestamp": "2020-10-02T08:40:28Z",
+                "generation": 3,
+                "labels": {
+                    "app": "mynewapp",
+                    "openshift.io/deployment-config.name": "mynewapp"
+                },
+                "name": "mynewapp-6",
+                "namespace": "mynewapp",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps.openshift.io/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "DeploymentConfig",
+                        "name": "mynewapp",
+                        "uid": "93a2b2a8-03e1-11eb-b143-080027237a3e"
+                    }
+                ],
+                "resourceVersion": "146641",
+                "selfLink": "/api/v1/namespaces/mynewapp/replicationcontrollers/mynewapp-6",
+                "uid": "ec6ff8cc-048a-11eb-b979-080027237a3e"
+            },
+            "spec": {
+                "replicas": 0,
+                "selector": {
+                    "deployment": "mynewapp-6",
+                    "deploymentconfig": "mynewapp"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "openshift.io/deployment-config.latest-version": "6",
+                            "openshift.io/deployment-config.name": "mynewapp",
+                            "openshift.io/deployment.name": "mynewapp-6"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "mynewapp",
+                            "deployment": "mynewapp-6",
+                            "deploymentconfig": "mynewapp"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "image": "172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29",
+                                "imagePullPolicy": "Always",
+                                "name": "mynewapp",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "observedGeneration": 3,
+                "replicas": 0
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "ReplicationController",
+            "metadata": {
+                "annotations": {
+                    "openshift.io/deployer-pod.completed-at": "2020-10-02 09:58:07 +0000 UTC",
+                    "openshift.io/deployer-pod.created-at": "2020-10-02 09:57:57 +0000 UTC",
+                    "openshift.io/deployer-pod.name": "mynewapp-7-deploy",
+                    "openshift.io/deployment-config.latest-version": "7",
+                    "openshift.io/deployment-config.name": "mynewapp",
+                    "openshift.io/deployment.phase": "Complete",
+                    "openshift.io/deployment.replicas": "",
+                    "openshift.io/deployment.status-reason": "config change",
+                    "openshift.io/encoded-deployment-config": "{\"kind\":\"DeploymentConfig\",\"apiVersion\":\"apps.openshift.io/v1\",\"metadata\":{\"name\":\"mynewapp\",\"namespace\":\"mynewapp\",\"selfLink\":\"/apis/apps.openshift.io/v1/namespaces/mynewapp/deploymentconfigs/mynewapp\",\"uid\":\"93a2b2a8-03e1-11eb-b143-080027237a3e\",\"resourceVersion\":\"146568\",\"generation\":8,\"creationTimestamp\":\"2020-10-01T12:28:14Z\",\"labels\":{\"app\":\"mynewapp\"},\"annotations\":{\"openshift.io/generated-by\":\"OpenShiftWebConsole\"}},\"spec\":{\"strategy\":{\"type\":\"Rolling\",\"rollingParams\":{\"updatePeriodSeconds\":1,\"intervalSeconds\":1,\"timeoutSeconds\":600,\"maxUnavailable\":\"25%\",\"maxSurge\":\"25%\"},\"resources\":{},\"activeDeadlineSeconds\":21600},\"triggers\":[{\"type\":\"ImageChange\",\"imageChangeParams\":{\"containerNames\":[\"mynewapp\"],\"from\":{\"kind\":\"ImageStreamTag\",\"namespace\":\"mynewapp\",\"name\":\"mynewapp:latest\"},\"lastTriggeredImage\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\"}},{\"type\":\"ConfigChange\"}],\"replicas\":1,\"test\":false,\"selector\":{\"deploymentconfig\":\"mynewapp\"},\"template\":{\"metadata\":{\"creationTimestamp\":null,\"labels\":{\"app\":\"mynewapp\",\"deploymentconfig\":\"mynewapp\"}},\"spec\":{\"containers\":[{\"name\":\"mynewapp\",\"image\":\"172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29\",\"ports\":[{\"containerPort\":8080,\"protocol\":\"TCP\"}],\"env\":[{\"name\":\"PGSQL_HOST\",\"value\":\"localhost\"}],\"resources\":{},\"terminationMessagePath\":\"/dev/termination-log\",\"terminationMessagePolicy\":\"File\",\"imagePullPolicy\":\"Always\"}],\"restartPolicy\":\"Always\",\"terminationGracePeriodSeconds\":30,\"dnsPolicy\":\"ClusterFirst\",\"securityContext\":{},\"schedulerName\":\"default-scheduler\"}}},\"status\":{\"latestVersion\":7,\"observedGeneration\":7,\"replicas\":1,\"updatedReplicas\":1,\"availableReplicas\":1,\"unavailableReplicas\":0,\"details\":{\"message\":\"config change\",\"causes\":[{\"type\":\"ConfigChange\"}]},\"conditions\":[{\"type\":\"Available\",\"status\":\"True\",\"lastUpdateTime\":\"2020-10-02T08:25:01Z\",\"lastTransitionTime\":\"2020-10-02T08:25:01Z\",\"message\":\"Deployment config has minimum availability.\"},{\"type\":\"Progressing\",\"status\":\"True\",\"lastUpdateTime\":\"2020-10-02T08:40:36Z\",\"lastTransitionTime\":\"2020-10-02T08:40:32Z\",\"reason\":\"NewReplicationControllerAvailable\",\"message\":\"replication controller \\\"mynewapp-6\\\" successfully rolled out\"}],\"readyReplicas\":1}}\n"
+                },
+                "creationTimestamp": "2020-10-02T09:57:57Z",
+                "generation": 2,
+                "labels": {
+                    "app": "mynewapp",
+                    "openshift.io/deployment-config.name": "mynewapp"
+                },
+                "name": "mynewapp-7",
+                "namespace": "mynewapp",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps.openshift.io/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "DeploymentConfig",
+                        "name": "mynewapp",
+                        "uid": "93a2b2a8-03e1-11eb-b143-080027237a3e"
+                    }
+                ],
+                "resourceVersion": "146655",
+                "selfLink": "/api/v1/namespaces/mynewapp/replicationcontrollers/mynewapp-7",
+                "uid": "bf5699c6-0495-11eb-b979-080027237a3e"
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {
+                    "deployment": "mynewapp-7",
+                    "deploymentconfig": "mynewapp"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "openshift.io/deployment-config.latest-version": "7",
+                            "openshift.io/deployment-config.name": "mynewapp",
+                            "openshift.io/deployment.name": "mynewapp-7"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "mynewapp",
+                            "deployment": "mynewapp-7",
+                            "deploymentconfig": "mynewapp"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "env": [
+                                    {
+                                        "name": "PGSQL_HOST",
+                                        "value": "localhost"
+                                    }
+                                ],
+                                "image": "172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29",
+                                "imagePullPolicy": "Always",
+                                "name": "mynewapp",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "fullyLabeledReplicas": 1,
+                "observedGeneration": 2,
+                "readyReplicas": 1,
+                "replicas": 1
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+                "annotations": {
+                    "template.openshift.io/expose-uri": "postgres://{.spec.clusterIP}:{.spec.ports[?(.name==\"postgresql\")].port}"
+                },
+                "creationTimestamp": "2020-10-01T14:42:09Z",
+                "labels": {
+                    "app": "postgresql-persistent",
+                    "template": "postgresql-persistent-template"
+                },
+                "name": "mydb",
+                "namespace": "mynewapp",
+                "resourceVersion": "95032",
+                "selfLink": "/api/v1/namespaces/mynewapp/services/mydb",
+                "uid": "48f2d603-03f4-11eb-950d-080027237a3e"
+            },
+            "spec": {
+                "clusterIP": "172.30.81.218",
+                "ports": [
+                    {
+                        "name": "postgresql",
+                        "port": 5432,
+                        "protocol": "TCP",
+                        "targetPort": 5432
+                    }
+                ],
+                "selector": {
+                    "name": "mydb"
+                },
+                "sessionAffinity": "None",
+                "type": "ClusterIP"
+            },
+            "status": {
+                "loadBalancer": {}
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftWebConsole"
+                },
+                "creationTimestamp": "2020-10-01T12:28:14Z",
+                "labels": {
+                    "app": "mynewapp"
+                },
+                "name": "mynewapp",
+                "namespace": "mynewapp",
+                "resourceVersion": "61998",
+                "selfLink": "/api/v1/namespaces/mynewapp/services/mynewapp",
+                "uid": "93a38776-03e1-11eb-950d-080027237a3e"
+            },
+            "spec": {
+                "clusterIP": "172.30.57.78",
+                "ports": [
+                    {
+                        "name": "8080-tcp",
+                        "port": 8080,
+                        "protocol": "TCP",
+                        "targetPort": 8080
+                    }
+                ],
+                "selector": {
+                    "deploymentconfig": "mynewapp"
+                },
+                "sessionAffinity": "None",
+                "type": "ClusterIP"
+            },
+            "status": {
+                "loadBalancer": {}
+            }
+        },
+        {
+            "apiVersion": "apps.openshift.io/v1",
+            "kind": "DeploymentConfig",
+            "metadata": {
+                "annotations": {
+                    "template.alpha.openshift.io/wait-for-ready": "true"
+                },
+                "creationTimestamp": "2020-10-01T14:42:09Z",
+                "generation": 2,
+                "labels": {
+                    "app": "postgresql-persistent",
+                    "template": "postgresql-persistent-template"
+                },
+                "name": "mydb",
+                "namespace": "mynewapp",
+                "resourceVersion": "123562",
+                "selfLink": "/apis/apps.openshift.io/v1/namespaces/mynewapp/deploymentconfigs/mydb",
+                "uid": "48fcf15f-03f4-11eb-b143-080027237a3e"
+            },
+            "spec": {
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "name": "mydb"
+                },
+                "strategy": {
+                    "activeDeadlineSeconds": 21600,
+                    "recreateParams": {
+                        "timeoutSeconds": 600
+                    },
+                    "resources": {},
+                    "type": "Recreate"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "name": "mydb"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "env": [
+                                    {
+                                        "name": "POSTGRESQL_USER",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "database-user",
+                                                "name": "mydb"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "POSTGRESQL_PASSWORD",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "database-password",
+                                                "name": "mydb"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "POSTGRESQL_DATABASE",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "database-name",
+                                                "name": "mydb"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "image": "172.30.1.1:5000/openshift/postgresql@sha256:b681d78125361519180a6ac05242c296f8906c11eab7e207b5ca9a89b6344392",
+                                "imagePullPolicy": "IfNotPresent",
+                                "livenessProbe": {
+                                    "exec": {
+                                        "command": [
+                                            "/usr/libexec/check-container",
+                                            "--live"
+                                        ]
+                                    },
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 120,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 10
+                                },
+                                "name": "postgresql",
+                                "ports": [
+                                    {
+                                        "containerPort": 5432,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "exec": {
+                                        "command": [
+                                            "/usr/libexec/check-container"
+                                        ]
+                                    },
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 5,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "memory": "512Mi"
+                                    }
+                                },
+                                "securityContext": {
+                                    "capabilities": {},
+                                    "privileged": false
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/var/lib/pgsql/data",
+                                        "name": "mydb-data"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30,
+                        "volumes": [
+                            {
+                                "name": "mydb-data",
+                                "persistentVolumeClaim": {
+                                    "claimName": "mydb"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "test": false,
+                "triggers": [
+                    {
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "postgresql"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "postgresql:9.6",
+                                "namespace": "openshift"
+                            },
+                            "lastTriggeredImage": "172.30.1.1:5000/openshift/postgresql@sha256:b681d78125361519180a6ac05242c296f8906c11eab7e207b5ca9a89b6344392"
+                        },
+                        "type": "ImageChange"
+                    },
+                    {
+                        "type": "ConfigChange"
+                    }
+                ]
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2020-10-01T14:43:04Z",
+                        "lastUpdateTime": "2020-10-01T14:43:04Z",
+                        "message": "replication controller \"mydb-1\" successfully rolled out",
+                        "reason": "NewReplicationControllerAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2020-10-02T08:24:29Z",
+                        "lastUpdateTime": "2020-10-02T08:24:29Z",
+                        "message": "Deployment config has minimum availability.",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "details": {
+                    "causes": [
+                        {
+                            "type": "ConfigChange"
+                        }
+                    ],
+                    "message": "config change"
+                },
+                "latestVersion": 1,
+                "observedGeneration": 2,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "unavailableReplicas": 0,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps.openshift.io/v1",
+            "kind": "DeploymentConfig",
+            "metadata": {
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftWebConsole"
+                },
+                "creationTimestamp": "2020-10-01T12:28:14Z",
+                "generation": 8,
+                "labels": {
+                    "app": "mynewapp"
+                },
+                "name": "mynewapp",
+                "namespace": "mynewapp",
+                "resourceVersion": "146657",
+                "selfLink": "/apis/apps.openshift.io/v1/namespaces/mynewapp/deploymentconfigs/mynewapp",
+                "uid": "93a2b2a8-03e1-11eb-b143-080027237a3e"
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {
+                    "deploymentconfig": "mynewapp"
+                },
+                "strategy": {
+                    "activeDeadlineSeconds": 21600,
+                    "resources": {},
+                    "rollingParams": {
+                        "intervalSeconds": 1,
+                        "maxSurge": "25%",
+                        "maxUnavailable": "25%",
+                        "timeoutSeconds": 600,
+                        "updatePeriodSeconds": 1
+                    },
+                    "type": "Rolling"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "mynewapp",
+                            "deploymentconfig": "mynewapp"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "env": [
+                                    {
+                                        "name": "PGSQL_HOST",
+                                        "value": "localhost"
+                                    }
+                                ],
+                                "image": "172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29",
+                                "imagePullPolicy": "Always",
+                                "name": "mynewapp",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                },
+                "test": false,
+                "triggers": [
+                    {
+                        "imageChangeParams": {
+                            "containerNames": [
+                                "mynewapp"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "mynewapp:latest",
+                                "namespace": "mynewapp"
+                            },
+                            "lastTriggeredImage": "172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29"
+                        },
+                        "type": "ImageChange"
+                    },
+                    {
+                        "type": "ConfigChange"
+                    }
+                ]
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2020-10-02T08:25:01Z",
+                        "lastUpdateTime": "2020-10-02T08:25:01Z",
+                        "message": "Deployment config has minimum availability.",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2020-10-02T09:58:04Z",
+                        "lastUpdateTime": "2020-10-02T09:58:07Z",
+                        "message": "replication controller \"mynewapp-7\" successfully rolled out",
+                        "reason": "NewReplicationControllerAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "details": {
+                    "causes": [
+                        {
+                            "type": "ConfigChange"
+                        }
+                    ],
+                    "message": "config change"
+                },
+                "latestVersion": 7,
+                "observedGeneration": 8,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "unavailableReplicas": 0,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "build.openshift.io/v1",
+            "kind": "BuildConfig",
+            "metadata": {
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftWebConsole"
+                },
+                "creationTimestamp": "2020-10-01T12:28:14Z",
+                "labels": {
+                    "app": "mynewapp"
+                },
+                "name": "mynewapp",
+                "namespace": "mynewapp",
+                "resourceVersion": "70166",
+                "selfLink": "/apis/build.openshift.io/v1/namespaces/mynewapp/buildconfigs/mynewapp",
+                "uid": "93a8c270-03e1-11eb-b143-080027237a3e"
+            },
+            "spec": {
+                "nodeSelector": null,
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "mynewapp:latest"
+                    }
+                },
+                "postCommit": {},
+                "resources": {},
+                "runPolicy": "Serial",
+                "source": {
+                    "git": {
+                        "ref": "master",
+                        "uri": "https://github.com/nockr/book-helloworld.git"
+                    },
+                    "type": "Git"
+                },
+                "strategy": {
+                    "sourceStrategy": {
+                        "from": {
+                            "kind": "ImageStreamTag",
+                            "name": "wildfly:13.0",
+                            "namespace": "openshift"
+                        }
+                    },
+                    "type": "Source"
+                },
+                "triggers": [
+                    {
+                        "imageChange": {
+                            "lastTriggeredImageID": "172.30.1.1:5000/openshift/wildfly@sha256:73b9d5578eac447606e708a635bc0661755866162673a4c6e6d1119248d3c2c8"
+                        },
+                        "type": "ImageChange"
+                    },
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "generic": {
+                            "secret": "1e3a00239cb18bdc"
+                        },
+                        "type": "Generic"
+                    },
+                    {
+                        "github": {
+                            "secret": "dae40a1b94ae03c8"
+                        },
+                        "type": "GitHub"
+                    }
+                ]
+            },
+            "status": {
+                "lastVersion": 2
+            }
+        },
+        {
+            "apiVersion": "build.openshift.io/v1",
+            "kind": "Build",
+            "metadata": {
+                "annotations": {
+                    "openshift.io/build-config.name": "mynewapp",
+                    "openshift.io/build.number": "1",
+                    "openshift.io/build.pod-name": "mynewapp-1-build"
+                },
+                "creationTimestamp": "2020-10-01T12:28:14Z",
+                "labels": {
+                    "app": "mynewapp",
+                    "buildconfig": "mynewapp",
+                    "openshift.io/build-config.name": "mynewapp",
+                    "openshift.io/build.start-policy": "Serial"
+                },
+                "name": "mynewapp-1",
+                "namespace": "mynewapp",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "build.openshift.io/v1",
+                        "controller": true,
+                        "kind": "BuildConfig",
+                        "name": "mynewapp",
+                        "uid": "93a8c270-03e1-11eb-b143-080027237a3e"
+                    }
+                ],
+                "resourceVersion": "65694",
+                "selfLink": "/apis/build.openshift.io/v1/namespaces/mynewapp/builds/mynewapp-1",
+                "uid": "93dfddf8-03e1-11eb-b143-080027237a3e"
+            },
+            "spec": {
+                "nodeSelector": null,
+                "output": {
+                    "pushSecret": {
+                        "name": "builder-dockercfg-bz2m2"
+                    },
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "mynewapp:latest"
+                    }
+                },
+                "postCommit": {},
+                "resources": {},
+                "revision": {
+                    "git": {
+                        "author": {
+                            "email": "gshipley@gmail.com",
+                            "name": "Grant Shipley"
+                        },
+                        "commit": "93665ed5b2bd477ae4ac39201626519a79bafb3b",
+                        "committer": {
+                            "email": "gshipley@gmail.com",
+                            "name": "Grant Shipley"
+                        },
+                        "message": "update"
+                    },
+                    "type": "Git"
+                },
+                "serviceAccount": "builder",
+                "source": {
+                    "git": {
+                        "ref": "master",
+                        "uri": "https://github.com/nockr/book-helloworld.git"
+                    },
+                    "type": "Git"
+                },
+                "strategy": {
+                    "sourceStrategy": {
+                        "from": {
+                            "kind": "DockerImage",
+                            "name": "172.30.1.1:5000/openshift/wildfly@sha256:73b9d5578eac447606e708a635bc0661755866162673a4c6e6d1119248d3c2c8"
+                        },
+                        "pullSecret": {
+                            "name": "builder-dockercfg-bz2m2"
+                        }
+                    },
+                    "type": "Source"
+                },
+                "triggeredBy": [
+                    {
+                        "message": "Build configuration change"
+                    }
+                ]
+            },
+            "status": {
+                "completionTimestamp": "2020-10-01T12:43:21Z",
+                "config": {
+                    "kind": "BuildConfig",
+                    "name": "mynewapp",
+                    "namespace": "mynewapp"
+                },
+                "duration": 906000000000,
+                "output": {
+                    "to": {
+                        "imageDigest": "sha256:7f1c73d9b3ae51011f266161bd7d6aa1b4643ce6f1b8e7a204bc56253fa51f66"
+                    }
+                },
+                "outputDockerImageReference": "172.30.1.1:5000/mynewapp/mynewapp:latest",
+                "phase": "Complete",
+                "stages": [
+                    {
+                        "durationMilliseconds": 1062,
+                        "name": "FetchInputs",
+                        "startTime": "2020-10-01T12:28:19Z",
+                        "steps": [
+                            {
+                                "durationMilliseconds": 1062,
+                                "name": "FetchGitSource",
+                                "startTime": "2020-10-01T12:28:19Z"
+                            }
+                        ]
+                    },
+                    {
+                        "durationMilliseconds": 837,
+                        "name": "CommitContainer",
+                        "startTime": "2020-10-01T12:43:18Z",
+                        "steps": [
+                            {
+                                "durationMilliseconds": 837,
+                                "name": "CommitContainer",
+                                "startTime": "2020-10-01T12:43:18Z"
+                            }
+                        ]
+                    },
+                    {
+                        "durationMilliseconds": 30062,
+                        "name": "Assemble",
+                        "startTime": "2020-10-01T12:42:48Z",
+                        "steps": [
+                            {
+                                "durationMilliseconds": 30062,
+                                "name": "AssembleBuildScripts",
+                                "startTime": "2020-10-01T12:42:48Z"
+                            }
+                        ]
+                    },
+                    {
+                        "durationMilliseconds": 1800,
+                        "name": "PushImage",
+                        "startTime": "2020-10-01T12:43:18Z",
+                        "steps": [
+                            {
+                                "durationMilliseconds": 1800,
+                                "name": "PushImage",
+                                "startTime": "2020-10-01T12:43:18Z"
+                            }
+                        ]
+                    }
+                ],
+                "startTimestamp": "2020-10-01T12:28:15Z"
+            }
+        },
+        {
+            "apiVersion": "build.openshift.io/v1",
+            "kind": "Build",
+            "metadata": {
+                "annotations": {
+                    "openshift.io/build-config.name": "mynewapp",
+                    "openshift.io/build.number": "2",
+                    "openshift.io/build.pod-name": "mynewapp-2-build"
+                },
+                "creationTimestamp": "2020-10-01T13:01:43Z",
+                "labels": {
+                    "app": "mynewapp",
+                    "buildconfig": "mynewapp",
+                    "openshift.io/build-config.name": "mynewapp",
+                    "openshift.io/build.start-policy": "Serial"
+                },
+                "name": "mynewapp-2",
+                "namespace": "mynewapp",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "build.openshift.io/v1",
+                        "controller": true,
+                        "kind": "BuildConfig",
+                        "name": "mynewapp",
+                        "uid": "93a8c270-03e1-11eb-b143-080027237a3e"
+                    }
+                ],
+                "resourceVersion": "70327",
+                "selfLink": "/apis/build.openshift.io/v1/namespaces/mynewapp/builds/mynewapp-2",
+                "uid": "4132af50-03e6-11eb-b143-080027237a3e"
+            },
+            "spec": {
+                "nodeSelector": null,
+                "output": {
+                    "pushSecret": {
+                        "name": "builder-dockercfg-bz2m2"
+                    },
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "mynewapp:latest"
+                    }
+                },
+                "postCommit": {},
+                "resources": {},
+                "revision": {
+                    "git": {
+                        "author": {
+                            "email": "72149507+nockr@users.noreply.github.com",
+                            "name": "nockr"
+                        },
+                        "commit": "ee126a01a0a23c72edef73aa8f8d59c84b58da41",
+                        "committer": {
+                            "email": "noreply@github.com",
+                            "name": "GitHub"
+                        },
+                        "message": "Update index.html"
+                    },
+                    "type": "Git"
+                },
+                "serviceAccount": "builder",
+                "source": {
+                    "git": {
+                        "ref": "master",
+                        "uri": "https://github.com/nockr/book-helloworld.git"
+                    },
+                    "type": "Git"
+                },
+                "strategy": {
+                    "sourceStrategy": {
+                        "from": {
+                            "kind": "DockerImage",
+                            "name": "172.30.1.1:5000/openshift/wildfly@sha256:73b9d5578eac447606e708a635bc0661755866162673a4c6e6d1119248d3c2c8"
+                        },
+                        "pullSecret": {
+                            "name": "builder-dockercfg-bz2m2"
+                        }
+                    },
+                    "type": "Source"
+                },
+                "triggeredBy": [
+                    {
+                        "message": "Manually triggered"
+                    }
+                ]
+            },
+            "status": {
+                "completionTimestamp": "2020-10-01T13:02:13Z",
+                "config": {
+                    "kind": "BuildConfig",
+                    "name": "mynewapp",
+                    "namespace": "mynewapp"
+                },
+                "duration": 30000000000,
+                "output": {
+                    "to": {
+                        "imageDigest": "sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29"
+                    }
+                },
+                "outputDockerImageReference": "172.30.1.1:5000/mynewapp/mynewapp:latest",
+                "phase": "Complete",
+                "stages": [
+                    {
+                        "durationMilliseconds": 978,
+                        "name": "FetchInputs",
+                        "startTime": "2020-10-01T13:01:46Z",
+                        "steps": [
+                            {
+                                "durationMilliseconds": 978,
+                                "name": "FetchGitSource",
+                                "startTime": "2020-10-01T13:01:46Z"
+                            }
+                        ]
+                    },
+                    {
+                        "durationMilliseconds": 1019,
+                        "name": "CommitContainer",
+                        "startTime": "2020-10-01T13:02:10Z",
+                        "steps": [
+                            {
+                                "durationMilliseconds": 1019,
+                                "name": "CommitContainer",
+                                "startTime": "2020-10-01T13:02:10Z"
+                            }
+                        ]
+                    },
+                    {
+                        "durationMilliseconds": 21663,
+                        "name": "Assemble",
+                        "startTime": "2020-10-01T13:01:50Z",
+                        "steps": [
+                            {
+                                "durationMilliseconds": 21663,
+                                "name": "AssembleBuildScripts",
+                                "startTime": "2020-10-01T13:01:50Z"
+                            }
+                        ]
+                    },
+                    {
+                        "durationMilliseconds": 964,
+                        "name": "PushImage",
+                        "startTime": "2020-10-01T13:02:12Z",
+                        "steps": [
+                            {
+                                "durationMilliseconds": 964,
+                                "name": "PushImage",
+                                "startTime": "2020-10-01T13:02:12Z"
+                            }
+                        ]
+                    }
+                ],
+                "startTimestamp": "2020-10-01T13:01:43Z"
+            }
+        },
+        {
+            "apiVersion": "image.openshift.io/v1",
+            "kind": "ImageStream",
+            "metadata": {
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftWebConsole"
+                },
+                "creationTimestamp": "2020-10-01T12:28:14Z",
+                "generation": 1,
+                "labels": {
+                    "app": "mynewapp"
+                },
+                "name": "mynewapp",
+                "namespace": "mynewapp",
+                "resourceVersion": "70307",
+                "selfLink": "/apis/image.openshift.io/v1/namespaces/mynewapp/imagestreams/mynewapp",
+                "uid": "93a1fbed-03e1-11eb-b143-080027237a3e"
+            },
+            "spec": {
+                "lookupPolicy": {
+                    "local": false
+                }
+            },
+            "status": {
+                "dockerImageRepository": "172.30.1.1:5000/mynewapp/mynewapp",
+                "tags": [
+                    {
+                        "items": [
+                            {
+                                "created": "2020-10-01T13:02:12Z",
+                                "dockerImageReference": "172.30.1.1:5000/mynewapp/mynewapp@sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29",
+                                "generation": 1,
+                                "image": "sha256:5f80989c55d19464073863fe1155ad706c379e039476e9957c81e65d43d50d29"
+                            },
+                            {
+                                "created": "2020-10-01T12:43:20Z",
+                                "dockerImageReference": "172.30.1.1:5000/mynewapp/mynewapp@sha256:7f1c73d9b3ae51011f266161bd7d6aa1b4643ce6f1b8e7a204bc56253fa51f66",
+                                "generation": 1,
+                                "image": "sha256:7f1c73d9b3ae51011f266161bd7d6aa1b4643ce6f1b8e7a204bc56253fa51f66"
+                            }
+                        ],
+                        "tag": "latest"
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "route.openshift.io/v1",
+            "kind": "Route",
+            "metadata": {
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftWebConsole",
+                    "openshift.io/host.generated": "true"
+                },
+                "creationTimestamp": "2020-10-01T12:28:14Z",
+                "labels": {
+                    "app": "mynewapp"
+                },
+                "name": "mynewapp",
+                "namespace": "mynewapp",
+                "resourceVersion": "62002",
+                "selfLink": "/apis/route.openshift.io/v1/namespaces/mynewapp/routes/mynewapp",
+                "uid": "93a3e2d6-03e1-11eb-b143-080027237a3e"
+            },
+            "spec": {
+                "host": "mynewapp-mynewapp.192.168.99.101.nip.io",
+                "port": {
+                    "targetPort": "8080-tcp"
+                },
+                "to": {
+                    "kind": "Service",
+                    "name": "mynewapp",
+                    "weight": 100
+                },
+                "wildcardPolicy": "None"
+            },
+            "status": {
+                "ingress": [
+                    {
+                        "conditions": [
+                            {
+                                "lastTransitionTime": "2020-10-01T12:28:14Z",
+                                "status": "True",
+                                "type": "Admitted"
+                            }
+                        ],
+                        "host": "mynewapp-mynewapp.192.168.99.101.nip.io",
+                        "routerName": "router",
+                        "wildcardPolicy": "None"
+                    }
+                ]
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": "",
+        "selfLink": ""
+    }
+}
